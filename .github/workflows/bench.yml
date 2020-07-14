@@ -1,0 +1,173 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Benchmarking
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  CPU_VARIANT: standard
+  INTEGRATED_SRAM_SIZE: 0x8000       
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # RISC-V 32
+  vexriscv:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - env:
+          CORE_TYPE: vexriscv
+        run: |
+          chmod +x install.sh
+          ./install.sh
+          export PATH=$PATH:~/.local/bin:$(echo $PWD/riscv64-*/bin/):$PWD/or1k/bin:$PWD/lm32gcc/bin
+          ./run.py --cpu-type=$CORE_TYPE --cpu-variant=$CPU_VARIANT --integrated-sram-size=$INTEGRATED_SRAM_SIZE --threads 1
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{github.job}}
+          path: ./*/*.json
+
+  serv:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - env:
+          CORE_TYPE: serv
+        run: |
+          chmod +x install.sh
+          ./install.sh
+          export PATH=$PATH:~/.local/bin:$(echo $PWD/riscv64-*/bin/):$PWD/or1k/bin:$PWD/lm32gcc/bin
+          ./run.py --cpu-type=$CORE_TYPE --cpu-variant=$CPU_VARIANT --integrated-sram-size=$INTEGRATED_SRAM_SIZE --threads 1
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{github.job}}
+          path: ./*/*.json
+
+  picorv32:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - env:
+          CORE_TYPE: picorv32
+        run: |
+          chmod +x install.sh
+          ./install.sh
+          export PATH=$PATH:~/.local/bin:$(echo $PWD/riscv64-*/bin/):$PWD/or1k/bin:$PWD/lm32gcc/bin
+          ./run.py --cpu-type=$CORE_TYPE --cpu-variant=$CPU_VARIANT --integrated-sram-size=$INTEGRATED_SRAM_SIZE --threads 1
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{github.job}}
+          path: ./*/*.json
+
+  minerva:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - env:
+          CORE_TYPE: minerva
+        run: |
+          chmod +x install.sh
+          ./install.sh
+          export PATH=$PATH:~/.local/bin:$(echo $PWD/riscv64-*/bin/):$PWD/or1k/bin:$PWD/lm32gcc/bin
+          ./run.py --cpu-type=$CORE_TYPE --cpu-variant=$CPU_VARIANT --integrated-sram-size=$INTEGRATED_SRAM_SIZE --threads 1
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{github.job}}
+          path: ./*/*.json
+
+  cv32e40p:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - env:
+          CORE_TYPE: cv32e40p
+        run: |
+          chmod +x install.sh
+          ./install.sh
+          export PATH=$PATH:~/.local/bin:$(echo $PWD/riscv64-*/bin/):$PWD/or1k/bin:$PWD/lm32gcc/bin
+          ./run.py --cpu-type=$CORE_TYPE --cpu-variant=$CPU_VARIANT --integrated-sram-size=$INTEGRATED_SRAM_SIZE --threads 1
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{github.job}}
+          path: ./*/*.json
+
+  # OpenRISC
+  mor1kx:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - env:
+          CORE_TYPE: mor1kx
+        run: |
+          chmod +x install.sh
+          ./install.sh
+          export PATH=$PATH:~/.local/bin:$(echo $PWD/riscv64-*/bin/):$PWD/or1k/bin:$PWD/lm32gcc/bin
+          ./run.py --cpu-type=$CORE_TYPE --cpu-variant=$CPU_VARIANT --integrated-sram-size=$INTEGRATED_SRAM_SIZE --threads 1
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{github.job}}
+          path: ./*/*.json
+  
+  # OpenPOWER
+  microwatt:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - env:
+          CORE_TYPE: microwatt
+        run: |
+          chmod +x install.sh
+          ./install.sh
+          export PATH=$PATH:~/.local/bin:$(echo $PWD/riscv64-*/bin/):$PWD/or1k/bin:$PWD/lm32gcc/bin
+          ./run.py --cpu-type=$CORE_TYPE --cpu-variant=$CPU_VARIANT --integrated-sram-size=$INTEGRATED_SRAM_SIZE --threads 1
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{github.job}}
+          path: ./*/*.json
+  
+  # LM32 
+  lm32:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - env:
+          CORE_TYPE: lm32
+        run: |
+          chmod +x install.sh
+          ./install.sh
+          export PATH=$PATH:~/.local/bin:$(echo $PWD/riscv64-*/bin/):$PWD/or1k/bin:$PWD/lm32gcc/bin
+          ./run.py --cpu-type=$CORE_TYPE --cpu-variant=$CPU_VARIANT --integrated-sram-size=$INTEGRATED_SRAM_SIZE --threads 1
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{github.job}}
+          path: ./*/*.json
+
+  # Result aggregation
+  table_maker:
+    runs-on: ubuntu-18.04
+    needs: [vexriscv, serv, picorv32, minerva, cv32e40p, lm32, mor1kx, microwatt]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+      - run: |
+          apt-get update
+          apt-get -y install python3 python3-setuptools python3-pip
+          pip3 install tabulate
+          ./table_maker.py
+          apt-get install python3-sphinx
+          mv *.rst docs/source
+          cd docs
+          make html
+      - uses: actions/upload-artifact@v2
+        with:
+          name: aggregated-results
+          path: |
+             *.rst
+              *.csv
+              docs/build/*
+
