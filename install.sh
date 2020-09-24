@@ -2,11 +2,11 @@
 # build essensials     
 set -e
 
-apt-get update
-apt-get -y install gnat-8 python3 python3-setuptools make build-essential wget gcc-powerpc64-linux-gnu gcc-powerpc64le-linux-gnu
-apt-get -y install bison flex libreadline-dev gawk tcl-dev libffi-dev graphviz xdot pkg-config libboost-system-dev git
-apt-get -y install libboost-python-dev libboost-filesystem-dev zlib1g-dev autoconf libevent-dev libjson-c-dev python3-pip
-pip3 install gitpython
+sudo apt-get update
+sudo apt-get -y install gnat-8 python3 python3-setuptools make build-essential wget gcc-powerpc64-linux-gnu gcc-powerpc64le-linux-gnu
+sudo apt-get -y install bison flex libreadline-dev gawk tcl-dev libffi-dev graphviz xdot pkg-config libboost-system-dev git
+sudo apt-get -y install libboost-python-dev libboost-filesystem-dev zlib1g-dev autoconf libevent-dev libjson-c-dev python3-pip
+sudo pip3 install gitpython
 
 # Verilator download and build
 git clone --branch stable https://github.com/verilator/verilator.git
@@ -14,7 +14,7 @@ cd verilator
 autoconf
 ./configure
 make -j $(nproc)
-make install
+sudo make install
 cd ..
 
 git clone --branch embench-tester https://github.com/antmicro/embench-iot.git Embench
@@ -39,7 +39,7 @@ git clone https://github.com/YosysHQ/yosys.git
 cd yosys
 make config-gcc
 make -j $(nproc)
-make install
+sudo make install
 cd ..
 
 # ghdl download and install
@@ -47,14 +47,14 @@ git clone https://github.com/ghdl/ghdl.git
 cd ghdl
 ./configure --prefix=/usr/local
 make -j $(nproc)
-make install
+sudo make install
 cd ..
 
 # yosys-gdhl-plugin download and install
 git clone https://github.com/ghdl/ghdl-yosys-plugin.git
 cd ghdl-yosys-plugin
 make -j $(nproc)
-make install
+sudo make install
 cd ..
 
 # conda download and install  
