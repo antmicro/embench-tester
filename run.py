@@ -81,6 +81,7 @@ def prepare_arguments_for_build_all(soc_kwargs, dict):
 -O2 -ffunction-sections'
     args.user_libs = f'{dict["BUILDINC_DIRECTORY"]}/../libbase/crt0.o \
 -L{dict["BUILDINC_DIRECTORY"]} -L{dict["BUILDINC_DIRECTORY"]}/../libbase \
+-L{dict["BUILDINC_DIRECTORY"]}/../libm \
 -L{dict["BUILDINC_DIRECTORY"]}/../libcompiler_rt \
 {dict["BUILDINC_DIRECTORY"]}/../bios/isr.o -lm -lbase-nofloat -lcompiler_rt'
     args.ldflags = f'-nostdlib -nodefaultlibs -Wl,--verbose {dict["CPUFLAGS"]}\
