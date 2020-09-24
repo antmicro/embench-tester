@@ -4,7 +4,7 @@ set -e
 
 sudo apt-get update
 sudo apt-get -y install gnat-8 python3 python3-setuptools make build-essential wget gcc-powerpc64-linux-gnu gcc-powerpc64le-linux-gnu
-sudo apt-get -y install bison flex libreadline-dev gawk tcl-dev libffi-dev graphviz xdot pkg-config libboost-system-dev git
+sudo apt-get -y install bison flex libreadline-dev gawk tcl-dev libffi-dev graphviz xdot pkg-config libboost-system-dev git libfl-dev
 sudo apt-get -y install libboost-python-dev libboost-filesystem-dev zlib1g-dev autoconf libevent-dev libjson-c-dev python3-pip
 sudo pip3 install gitpython
 
