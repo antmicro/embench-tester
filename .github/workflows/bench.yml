@@ -33,23 +33,6 @@ jobs:
           name: ${{github.job}}
           path: ./*/*.json
 
-  serv:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-      - env:
-          CORE_TYPE: serv
-        name: Instalation and simulation
-        run: |
-          chmod +x install.sh
-          ./install.sh
-          export PATH=$PATH:~/.local/bin:$(echo $PWD/riscv64-*/bin/):$PWD/or1k/bin:$PWD/lm32gcc/bin
-          ./run.py --cpu-type=$CORE_TYPE --cpu-variant=$CPU_VARIANT --integrated-sram-size=$INTEGRATED_SRAM_SIZE --threads 1
-      - uses: actions/upload-artifact@v2
-        with:
-          name: ${{github.job}}
-          path: ./*/*.json
-
   picorv32:
     runs-on: ubuntu-18.04
     steps:
@@ -158,7 +141,7 @@ jobs:
   # Result aggregation
   table_maker:
     runs-on: ubuntu-18.04
-    needs: [vexriscv, serv, picorv32, minerva, cv32e40p, lm32, mor1kx, microwatt]
+    needs: [vexriscv, picorv32, minerva, cv32e40p, lm32, mor1kx, microwatt]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
