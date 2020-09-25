@@ -3,13 +3,13 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Embench-LiteX tester's documentation!
+Welcome to Embench-LiteX tester's results!
 ================================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   platform
-   absolute_results
-   relative_results
+.. include:: relative_results.rst
+.. include:: absolute_results.rst
+.. include:: platform.rst

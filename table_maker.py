@@ -67,13 +67,69 @@ def create_rst_table_from_jsons(source, dest):
         output_file.write(tabulate(table, header, 'rst', numalign="right"))
 
 
+def create_platform_rst_from_jsons(source):
+    title = {}
+    title[0] = "Platform"
+    title[1] = "Used tools"
+    title[2] = "Toolchains:"
+    title[3] = "Other tools:"
+
+    cores, content = create_dict_from_json_files(source)
+    sha1s = dict_to_array_of_arrays(content)[0]
+    header = ["Core", "Core sha1"]
+    table = []
+    for i in range(len(cores)):
+        table.append([cores[i], sha1s[i+1]])
+    platform_dict = {}
+    for key in content.keys():
+        if key == 'CPU_sha1':
+            continue
+        platform_dict[key] = set(content[key])
+
+    toolchain_to_arch = {
+        "riscv64": "RISC-V",
+        "lm32": "LM32",
+        "or1k": "OpenRISC",
+        "powerpc64le": "OpenPOWER"
+    }
+
+    with open('platform.rst', 'w') as output_file:
+        output_file.write(title[0]+'\n')
+        output_file.write('*'*len(title[0])+'\n')
+        output_file.write(tabulate(table, header, 'rst')+'\n\n')
+        output_file.write(title[1]+'\n')
+        output_file.write('*'*len(title[1])+'\n')
+
+        output_file.write(title[2]+'\n')
+        output_file.write('#'*len(title[2])+'\n')
+        for i in platform_dict["toolchain"]:
+            i = i.split("Copyright")[0].replace("\n", " ")
+            t = i.split("-")[0]
+            output_file.write(f':{toolchain_to_arch[t]}:\n')
+            output_file.write(f'\t{i}\n\n')
+        output_file.write("\n")
+
+        output_file.write(title[3]+'\n')
+        output_file.write('#'*len(title[3])+'\n')
+
+        for key in platform_dict.keys():
+            if key == "toolchain":
+                continue
+            else:
+                output_file.write(f':{key}:\n')
+                for i in platform_dict[key]:
+                    i = i.split("Copyright")[0].replace("\n", " ")
+                    t = i.split("-")[0]
+                    output_file.write(f'\t{i}\n\n')
+
+
 def main():
     create_csv_table_from_jsons('./*/result.json', 'relative_results.csv')
     create_csv_table_from_jsons('./*/result_abs.json', 'absolute_results.csv')
     create_csv_table_from_jsons('./*/platform.json', 'platform.csv')
     create_rst_table_from_jsons('./*/result.json', 'relative_results.rst')
     create_rst_table_from_jsons('./*/result_abs.json', 'absolute_results.rst')
-    create_rst_table_from_jsons('./*/platform.json', 'platform.rst')
+    create_platform_rst_from_jsons('./*/platform.json')
 
 
 if __name__ == '__main__':
