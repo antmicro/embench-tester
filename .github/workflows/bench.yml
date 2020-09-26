@@ -150,9 +150,9 @@ jobs:
           sudo apt-get update
           sudo apt-get -y install python3 python3-setuptools python3-pip
           sudo pip3 install tabulate
-          ./table_maker.py
+          ./table_maker.py vexriscv/vexriscv picorv32/picorv32 minerva/minerva cv32e40p/cv32e40p lm32/lm32 mor1kx/mor1kx microwatt/microwatt
           sudo apt-get install python3-sphinx
-          mv *.rst docs/source
+          mv *.rst docs/sourc
           cd docs
           make html
       - name: Deploy page
