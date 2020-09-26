@@ -4,6 +4,7 @@ import glob
 import json
 import os
 import csv
+import argparse
 from tabulate import tabulate
 
 
@@ -14,12 +15,10 @@ def add_to_dict(_dict, key, value):
         _dict[key] = [value]
 
 
-def create_dict_from_json_files(path):
+def create_dict_from_json_files(files):
     main_dict = {}
     folders = []
-    print(f'looking for files in path:{path}')
-    files = glob.glob(path)
-    print(f'found: {files}')
+    print(f'processing files: {files}')
     for f in files:
         folders.append(os.path.basename(os.path.dirname(f)))
         file = open(f, "r")
@@ -44,8 +43,9 @@ def dict_to_array_of_arrays(_dict):
     return main_array
 
 
-def create_csv_table_from_jsons(source, dest):
-    header, content = create_dict_from_json_files(source)
+def create_csv_table_from_jsons(dirs, source, dest):
+    sources = [d + '/' + source for d in dirs]
+    header, content = create_dict_from_json_files(sources)
     table = dict_to_array_of_arrays(content)
     header.insert(0, '')
     with open(dest, 'w', newline='') as output_file:
@@ -54,11 +54,13 @@ def create_csv_table_from_jsons(source, dest):
         writer.writerows(table)
 
 
-def create_rst_table_from_jsons(source, dest):
+def create_rst_table_from_jsons(dirs, source, dest):
     title = dest.split('.')
     title = title[0]
     title = title.replace('_', ' ').capitalize()
-    header, content = create_dict_from_json_files(source)
+
+    sources = [d + '/' + source for d in dirs]
+    header, content = create_dict_from_json_files(sources)
     table = dict_to_array_of_arrays(content)
     header.insert(0, '')
     with open(dest, 'w') as output_file:
@@ -67,14 +69,15 @@ def create_rst_table_from_jsons(source, dest):
         output_file.write(tabulate(table, header, 'rst', numalign="right"))
 
 
-def create_platform_rst_from_jsons(source):
+def create_platform_rst_from_jsons(dirs, source):
     title = {}
     title[0] = "Platform"
     title[1] = "Used tools"
     title[2] = "Toolchains:"
     title[3] = "Other tools:"
 
-    cores, content = create_dict_from_json_files(source)
+    sources = [d + '/' + source for d in dirs]
+    cores, content = create_dict_from_json_files(sources)
     sha1s = dict_to_array_of_arrays(content)[0]
     header = ["Core", "Core sha1"]
     table = []
@@ -124,12 +127,17 @@ def create_platform_rst_from_jsons(source):
 
 
 def main():
-    create_csv_table_from_jsons('./*/result.json', 'relative_results.csv')
-    create_csv_table_from_jsons('./*/result_abs.json', 'absolute_results.csv')
-    create_csv_table_from_jsons('./*/platform.json', 'platform.csv')
-    create_rst_table_from_jsons('./*/result.json', 'relative_results.rst')
-    create_rst_table_from_jsons('./*/result_abs.json', 'absolute_results.rst')
-    create_platform_rst_from_jsons('./*/platform.json')
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('dirs', nargs='+', help='List of folders to search in')
+    args = parser.parse_args()
+
+    create_csv_table_from_jsons(args.dirs, 'result.json', 'relative_results.csv')
+    create_csv_table_from_jsons(args.dirs, 'result_abs.json', 'absolute_results.csv')
+    create_csv_table_from_jsons(args.dirs, 'platform.json', 'platform.csv')
+    create_rst_table_from_jsons(args.dirs, 'result.json', 'relative_results.rst')
+    create_rst_table_from_jsons(args.dirs, 'result_abs.json', 'absolute_results.rst')
+    create_platform_rst_from_jsons(args.dirs, 'platform.json')
 
 
 if __name__ == '__main__':
