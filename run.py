@@ -15,7 +15,7 @@ from Embench import build_all
 from Embench import benchmark_speed
 
 
-def collect_cpu_and_toolchain_data(cpu_report):
+def collect_cpu_and_toolchain_data(cpu_report, mode):
     working_dir = os.getcwd()
     d = {}
 
@@ -39,7 +39,7 @@ def collect_cpu_and_toolchain_data(cpu_report):
         d[sw] = res.stdout.decode('utf-8')
 
     os.chdir(f'{cpu_report["CPU"]}')
-    platform_data = open('platform.json', 'w')
+    platform_data = open(f'{mode}_platform.json', 'w')
     platform_data.write(json.dumps(d))
     platform_data.close()
     os.chdir(os.pardir)
@@ -119,6 +119,13 @@ When running microwatt set to standard+ghdl"
 When running microwatt set to at least 0x8000",
         default=0x8000
     )
+    parser.add_argument(
+        '--benchmark-strategy',
+        help="Set to absolute, relative or combination of both, to\
+test performance in given mode",
+        nargs='+',
+        required=True
+    )
 
 
 def main():
@@ -126,7 +133,13 @@ def main():
     parser = argparse.ArgumentParser(
             description='Build benchmarks for given cpu type')
     run_arg_parser(parser)
-    parser.parse_args()
+    run_args = parser.parse_args()
+
+    strategy = ['absolute', 'relative']
+    for i in run_args.benchmark_strategy:
+        if i not in strategy:
+            print("Unsupportet strategy: " + i)
+            exit()
 
     internal_parser = argparse.ArgumentParser()
 
@@ -167,7 +180,8 @@ def main():
             cpu_report[key] = val
 
     # Collect imformation about cpu repo and toolchain version
-    collect_cpu_and_toolchain_data(cpu_report)
+    for i in run_args.benchmark_strategy:
+        collect_cpu_and_toolchain_data(cpu_report, i)
 
     # Make directories for benchamrks and logs from embench
     if not os.path.exists(f'{soc_kwargs["cpu_type"]}/benchmarks'):
@@ -189,7 +203,6 @@ def main():
     arglist.target_module = 'run_litex_sim'
     arglist.timeout = 7200
     arglist.baselinedir = 'baseline-data'
-    arglist.absolute = False
     arglist.json_comma = False
     arglist.change_dir = False
 
@@ -202,22 +215,30 @@ def main():
     logs_before = set(glob.glob(f'./{soc_kwargs["cpu_type"]}/logs/speed*'))
 
     # Bench relative speed
-    benchmark_speed.submodule_main(arglist, remnant)
+    if 'relative' in run_args.benchmark_strategy:
+        arglist.absolute = False
+        benchmark_speed.submodule_main(arglist, remnant)
+        relative_result_path = f'./{soc_kwargs["cpu_type"]}/result.json'
 
     # Bench absolute speed
-    arglist.absolute = True
-    benchmark_speed.submodule_main(arglist, remnant)
+    if 'absolute' in run_args.benchmark_strategy:
+        arglist.absolute = True
+        benchmark_speed.submodule_main(arglist, remnant)
+        absolute_result_path = f'./{soc_kwargs["cpu_type"]}/result_abs.json'
 
+    # Extract results
     logs_path = f'./{soc_kwargs["cpu_type"]}/logs/speed*'
     logs_new = set(glob.glob(logs_path))-logs_before
 
     logs_new = sorted(list(logs_new))
 
-    relative_result_path = f'./{soc_kwargs["cpu_type"]}/result.json'
-    absolute_result_path = f'./{soc_kwargs["cpu_type"]}/result_abs.json'
+    if 'relative' in run_args.benchmark_strategy:
+        extract_json_results_from_file_to_file(logs_new[0],
+                                               relative_result_path)
 
-    extract_json_results_from_file_to_file(logs_new[0], relative_result_path)
-    extract_json_results_from_file_to_file(logs_new[1], absolute_result_path)
+    if 'absolute' in run_args.benchmark_strategy:
+        extract_json_results_from_file_to_file(logs_new[1],
+                                               absolute_result_path)
 
 
 if __name__ == '__main__':

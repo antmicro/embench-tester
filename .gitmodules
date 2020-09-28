@@ -1,0 +1,9 @@
+[submodule "third_party/yosys"]
+	path = third_party/yosys
+	url = https://github.com/YosysHQ/yosys.git
+[submodule "third_party/ghdl"]
+	path = third_party/ghdl
+	url = https://github.com/ghdl/ghdl.git
+[submodule "third_party/ghdl-yosys-plugin"]
+	path = third_party/ghdl-yosys-plugin
+	url = https://github.com/ghdl/ghdl-yosys-plugin.git

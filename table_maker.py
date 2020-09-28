@@ -130,6 +130,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('dirs', nargs='+', help='List of folders to search in')
+    parser.add_argument('out_dirs', help="Path to output folder"
     args = parser.parse_args()
 
     create_csv_table_from_jsons(args.dirs, 'result.json', 'relative_results.csv')

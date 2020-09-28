@@ -23,19 +23,18 @@ git clone --branch embench-tester https://github.com/antmicro/embench-iot.git Em
 mv ./config/sim/ ./Embench/config/
 mv ./pylib/run_litex_sim.py ./Embench/pylib/run_litex_sim.py
 
+# LiteX install
 git clone --branch embench-tester https://github.com/antmicro/litex
-
 mv litex/litex_setup.py .
 chmod +x litex_setup.py
 ./litex_setup.py init install --user
-./litex_setup.py gcc
 
 # nMigen install
 pip3 install git+https://github.com/m-labs/nmigen.git
 pip3 install nmigen-yosys
 
+cd third_party
 # yosys download and install
-git clone https://github.com/YosysHQ/yosys.git
 cd yosys
 make config-gcc
 make -j $(nproc)
@@ -43,7 +42,6 @@ sudo make install
 cd ..
 
 # ghdl download and install
-git clone https://github.com/ghdl/ghdl.git
 cd ghdl
 ./configure --prefix=/usr/local
 make -j $(nproc)
@@ -51,25 +49,30 @@ sudo make install
 cd ..
 
 # yosys-gdhl-plugin download and install
-git clone https://github.com/ghdl/ghdl-yosys-plugin.git
 cd ghdl-yosys-plugin
 make -j $(nproc)
 sudo make install
 cd ..
 
+cd ..
 # conda download and install  
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod +x Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda
-source $HOME/miniconda/bin/activate
+export PATH=$PATH:$HOME/miniconda/bin
 
 # OpenRISC gcc dwonload and install
 mkdir or1k 
-conda install -y -c timvideos gcc-or1k-elf -p ./or1k
-ln -s $PWD/or1k/lib/libmpfr.so.6 $PWD/or1k/lib/libmpfr.so.4
+conda install -y -c timvideos gcc-or1k-elf-newlib -p ./or1k
 
 # lm32 gcc download and install
 mkdir lm32gcc
-conda install -y -c timvideos gcc-lm32-elf  -p ./lm32gcc
-ln -s $PWD/lm32gcc/lib/libmpfr.so.6 $PWD/lm32gcc/lib/libmpfr.so.4
+conda install -y -c timvideos gcc-lm32-elf-newlib=8  -p ./lm32gcc
 
+# RISC-V gcc download and install
+mkdir riscv64
+conda install -y -c timvideos gcc-riscv64-elf-newlib  -p ./riscv64
+
+# OpenPOWER gcc download and install
+mkdir ppc64le
+conda install -y -c timvideos gcc-ppc64le-linux-musl  -p ./ppc64le
