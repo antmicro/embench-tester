@@ -78,65 +78,6 @@ def create_csv_table_from_dict(_dict, header, po):
         writer.writerows(table)
 
 
-"""
-def create_platform_rst_from_jsons(dirs, source):
-    title = {}
-    title[0] = "Platform"
-    title[1] = "Used tools"
-    title[2] = "Toolchains:"
-    title[3] = "Other tools:"
-
-    sources = [d + '/' + source for d in dirs]
-    cores, content = create_dict_from_json_files(sources)
-    sha1s = dict_to_array_of_arrays(content)[0]
-    header = ["Core", "Core sha1"]
-    table = []
-    for i in range(len(cores)):
-        table.append([cores[i], sha1s[i+1]])
-    platform_dict = {}
-    for key in content.keys():
-        if key == 'CPU_sha1':
-            continue
-        platform_dict[key] = set(content[key])
-
-    toolchain_to_arch = {
-        "riscv64": "RISC-V",
-        "lm32": "LM32",
-        "or1k": "OpenRISC",
-        "powerpc64le": "OpenPOWER"
-    }
-
-    with open('platform.rst', 'w') as output_file:
-        output_file.write(title[0]+'\n')
-        output_file.write('*'*len(title[0])+'\n')
-        output_file.write(tabulate(table, header, 'rst')+'\n\n')
-        output_file.write(title[1]+'\n')
-        output_file.write('*'*len(title[1])+'\n')
-
-        output_file.write(title[2]+'\n')
-        output_file.write('#'*len(title[2])+'\n')
-        for i in platform_dict["toolchain"]:
-            i = i.split("Copyright")[0].replace("\n", " ")
-            t = i.split("-")[0]
-            output_file.write(f':{toolchain_to_arch[t]}:\n')
-            output_file.write(f'\t{i}\n\n')
-        output_file.write("\n")
-
-        output_file.write(title[3]+'\n')
-        output_file.write('#'*len(title[3])+'\n')
-
-        for key in platform_dict.keys():
-            if key == "toolchain":
-                continue
-            else:
-                output_file.write(f':{key}:\n')
-                for i in platform_dict[key]:
-                    i = i.split("Copyright")[0].replace("\n", " ")
-                    t = i.split("-")[0]
-                    output_file.write(f'\t{i}\n\n')
-"""
-
-
 def main():
 
     parser = argparse.ArgumentParser()
@@ -159,22 +100,41 @@ to be excluded from template folder', default=[])
     config_file.close()
     for config in run_config['tables']:
         files = scan_for_files(args.dirs, config['file_names'])
-        main = create_dict_from_json_files(files, config['skip'])
+        if 'skip' in config:
+            main = create_dict_from_json_files(files, config['skip'])
+        else:
+            main = create_dict_from_json_files(files)
+        
         folder_names = get_folder_names_from_file_paths(files)
         header = config['corner'] + folder_names
-        if config['nested']:
-            temp = main
+        if 'header' in config:
+            header = config['header']
+        
+        csv_data = {}
+        if 'keys' in config:
             for i in config['keys']:
-                temp = temp[i]
-            csv_data = temp
+                temp = main
+                for j in i:
+                    temp = temp[j]
+                csv_data.update(temp)
         else:
             csv_data = main
+
+        if 'mult_value' in config:
+            for key in csv_data.keys():
+                if key not in config["exclude_mult"]:
+                    for i in range(len(csv_data[key])):
+                        csv_data[key][i] *= config['mult_value']
+                        csv_data[key][i] = round(csv_data[key][i],2)
+        
         output = args.out_dir + '/' + config['output_file_csv']
         create_csv_table_from_dict(csv_data, header, output)
-
-        template = env.get_template(config['template_name'])
-        with open(args.out_dir + '/' + config['output_file_rst'], 'w') as out:
-            out.write(template.render(config['template_dict']))
+        
+        if 'template_name' in config:
+            template = env.get_template(config['template_name'])
+            config['template_dict'].update(main)
+            with open(args.out_dir + '/' + config['output_file_rst'], 'w') as out:
+                out.write(template.render(config['template_dict']))
 
 
 if __name__ == '__main__':

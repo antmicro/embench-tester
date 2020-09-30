@@ -21,7 +21,9 @@ def collect_cpu_and_toolchain_data(cpu_report, mode):
 
     os.chdir(f'pythondata-cpu-{cpu_report["CPU"]}')
     repo = Repo(os.getcwd())
-    d['CPU_sha1'] = repo.head.commit.hexsha
+    d['CPU'] = {
+        cpu_report['CPU']: repo.head.commit.hexsha
+    }
     os.chdir(working_dir)
 
     software_used = {
@@ -36,7 +38,8 @@ def collect_cpu_and_toolchain_data(cpu_report, mode):
             [command, '--version'],
             stdout=subprocess.PIPE
         )
-        d[sw] = res.stdout.decode('utf-8')
+        d[sw] = res.stdout.decode('utf-8').split("Copyright")[0]
+        d[sw] = d[sw].replace('\n', ' ')
 
     os.chdir(f'{cpu_report["CPU"]}')
     platform_data = open(f'{mode}_platform.json', 'w')
