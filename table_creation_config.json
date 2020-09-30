@@ -1,0 +1,98 @@
+{
+  "tables": [
+    {
+      "file_names": "result.json",
+      "skip": [
+        "speed geometric standard deviation",
+        "speed geometric mean"
+      ],
+      "corner": [
+        "Benchmarks"
+      ],
+      "nested": true,
+      "keys": [
+        "detailed speed results"
+      ],
+      "output_file_csv": "relative_results.csv",
+      "output_file_rst": "relative_results.rst",
+      "template_name": "table_template.jinja",
+      "template_dict": {
+        "title": "Relative benchmark results:",
+        "file_path": "relative_results.csv",
+        "notes": [
+          "This results are comparasion to ARM Cortex M4",
+          "Higher value is better"
+        ]
+      }
+    },
+    {
+      "file_names": "result.json",
+      "skip": [
+        "detailed speed results"
+      ],
+      "corner": [
+        ""
+      ],
+      "nested": false,
+      "keys": [],
+      "output_file_csv": "relative_results_statistics.csv",
+      "output_file_rst": "relative_results_statistics.rst",
+      "template_name": "table_template.jinja",
+      "template_dict": {
+        "title": "Benchmark statistics",
+        "file_path": "relative_results_statistics.csv",
+        "notes": [
+          "Higher geometric mean is better",
+	  "Lower standard deviation is better, more consistent results"
+        ]
+      }
+    },
+    {
+      "file_names": "result_abs.json",
+      "skip": [
+        "speed geometric standard deviation",
+        "speed geometric mean"
+      ],
+      "corner": [
+        "Benchmarks"
+      ],
+      "nested": true,
+      "keys": [
+        "detailed speed results"
+      ],
+      "output_file_csv": "absolute_results.csv",
+      "output_file_rst": "absolute_results.rst",
+      "template_name": "table_template.jinja",
+      "template_dict": {
+        "title": "Absolute benchmark results:",
+        "file_path": "relative_results.csv",
+        "notes": [
+          "This results are in ms",
+          "Lower value is better"
+        ]
+      }
+    },
+    {
+      "file_names": "result_abs.json",
+      "skip": [
+        "detailed speed results"
+      ],
+      "corner": [
+        ""
+      ],
+      "nested": false,
+      "keys": [],
+      "output_file_csv": "absolute_results_statistics.csv",
+      "output_file_rst": "absolute_results_statistics.rst",
+      "template_name": "table_template.jinja",
+      "template_dict": {
+        "title": "Benchmark statistics",
+        "file_path": "absolute_results_statistics.csv",
+        "notes": [
+          "Higher geometric mean is better",
+	  "Lower standard deviation is better, more consistent results"
+        ]
+      }
+    }
+  ]
+}

@@ -11,5 +11,6 @@ Welcome to Embench-LiteX tester's results!
    :caption: Contents:
 
 .. include:: relative_results.rst
+.. include:: relative_results_statistics.rst
 .. include:: absolute_results.rst
-.. include:: platform.rst
+.. include:: absolute_results_statistics.rst

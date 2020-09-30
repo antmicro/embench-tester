@@ -1,0 +1,10 @@
+.. csv-table:: {{title}}
+  :file: {{file_path}}
+  :header-rows: 1
+  :stub-columns: 1
+{% if notes %}
+Notes:
+{% for note in notes %}
+* {{note}}
+{% endfor %}
+{%endif%}

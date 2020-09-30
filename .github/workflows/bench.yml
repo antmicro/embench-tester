@@ -45,7 +45,6 @@ jobs:
           sudo pip3 install tabulate
           ./table_maker.py vexriscv/vexriscv picorv32/picorv32 minerva/minerva cv32e40p/cv32e40p lm32/lm32 mor1kx/mor1kx microwatt/microwatt
           sudo apt-get install python3-sphinx
-          mv *.rst docs/source
           cd docs
           make html
       - uses: actions/upload-artifact@v2
@@ -56,8 +55,6 @@ jobs:
         with:
           name: aggregated-results
           path: |
-             *.rst
-              *.csv
               docs/build/*
 
   # GH page deployment
