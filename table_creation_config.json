@@ -14,17 +14,7 @@
       ],
       "mult_value": 100,
       "exclude_mult": [],
-      "output_file_csv": "relative_results.csv",
-      "output_file_rst": "relative_results.rst",
-      "template_name": "table_template.jinja",
-      "template_dict": {
-        "title": "Relative tests results: [%]",
-        "file_path": "relative_results.csv",
-        "notes": [
-          "This results are comparasion to ARM Cortex M4",
-          "Higher value is better"
-        ]
-      }
+      "output_file_csv": "relative_results.csv"
     },
     {
       "file_names": "result.json",
@@ -38,18 +28,7 @@
       "exclude_mult": [
       	"speed geometric standard deviation"
       ],
-      "output_file_csv": "relative_results_statistics.csv",
-      "output_file_rst": "relative_results_statistics.rst",
-      "template_name": "table_template.jinja",
-      "template_dict": {
-        "title": "Benchmark statistics",
-        "file_path": "relative_results_statistics.csv",
-        "notes": [
-	  "Benchmaark consists of multiple indvidual tests",
-          "Higher geometric mean is better",
-	  "Lower standard deviation is better, more consistent results"
-        ]
-      }
+      "output_file_csv": "relative_results_statistics.csv"
     },
     {
       "file_names": "result_abs.json",
@@ -63,16 +42,7 @@
       "keys": [
 	["detailed speed results"]
       ],
-      "output_file_csv": "absolute_results.csv",
-      "output_file_rst": "absolute_results.rst",
-      "template_name": "table_template.jinja",
-      "template_dict": {
-        "title": "Absolute tests results: [ms]",
-        "file_path": "absolute_results.csv",
-        "notes": [
-          "Lower value is better"
-        ]
-      }
+      "output_file_csv": "absolute_results.csv"
     },
     {
       "file_names": "result_abs.json",
@@ -82,23 +52,10 @@
       "corner": [
         ""
       ],
-      "output_file_csv": "absolute_results_statistics.csv",
-      "output_file_rst": "absolute_results_statistics.rst",
-      "template_name": "table_template.jinja",
-      "template_dict": {
-        "title": "Benchmark statistics:",
-        "file_path": "absolute_results_statistics.csv",
-        "notes": [
-	  "Benchmaark consists of multiple indvidual tests",
-          "Higher geometric mean is better",
-	  "Lower standard deviation is better, more consistent results"
-        ]
-      }
+      "output_file_csv": "absolute_results_statistics.csv"
     },
     {
       "file_names": "platform.json",
-      "skip": [
-      ],
       "corner": [
         ""
       ],
@@ -111,12 +68,7 @@
       "template_name": "platform_template.jinja",
       "template_dict": {
         "title": "Benchmark statistics:",
-        "file_path": "cpu_sha.csv",
-        "notes": [
-	  "Benchmaark consists of multiple indvidual tests",
-          "Higher geometric mean is better",
-	  "Lower standard deviation is better, more consistent results"
-        ]
+        "file_path": "cpu_sha.csv"
       }
     }
   ]
