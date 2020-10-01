@@ -86,7 +86,7 @@ def prepare_arguments_for_build_all(soc_kwargs, dict):
 -L{dict["BUILDINC_DIRECTORY"]} -L{dict["BUILDINC_DIRECTORY"]}/../libbase \
 -L{dict["BUILDINC_DIRECTORY"]}/../libm \
 -L{dict["BUILDINC_DIRECTORY"]}/../libcompiler_rt \
-{dict["BUILDINC_DIRECTORY"]}/../bios/isr.o -lm -lbase-nofloat -lcompiler_rt'
+{dict["BUILDINC_DIRECTORY"]}/../bios/isr.o -lm -lbase-nofloat -lcompiler_rt -lgcc'
     args.ldflags = f'-nostdlib -nodefaultlibs -Wl,--verbose {dict["CPUFLAGS"]}\
             -T{dict["BUILDINC_DIRECTORY"]}/../../linker.ld -N'
     args.clean = True
