@@ -4,7 +4,7 @@
   :stub-columns: 1
 
 Notes:
-* This results arecomparasion to ARM Cortex M4
+* This resultes compare performance to ARM Cortex M4 (100)
 * Higher values are better
 
 .. csv-table:: Benchmark statistics:

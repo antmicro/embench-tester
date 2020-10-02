@@ -128,7 +128,8 @@ When running microwatt set to at least 0x8000",
         help="Set to absolute, relative or combination of both, to\
 test performance in given mode",
         nargs='+',
-        required=True
+        required=True,
+        choices=['absolute', 'relative']
     )
 
 
@@ -138,12 +139,6 @@ def main():
             description='Build benchmarks for given cpu type')
     run_arg_parser(parser)
     run_args = parser.parse_args()
-
-    strategy = ['absolute', 'relative']
-    for i in run_args.benchmark_strategy:
-        if i not in strategy:
-            print("Unsupportet strategy: " + i)
-            exit()
 
     internal_parser = argparse.ArgumentParser()
 
