@@ -232,12 +232,18 @@ def main():
 
     logs_new = sorted(list(logs_new))
 
-    if 'relative' in run_args.benchmark_strategy:
+    if ['relative', 'absolute'] in run_args.benchmark_strategy:
+        extract_json_results_from_file_to_file(logs_new[0],
+                                               relative_result_path)
+        extract_json_results_from_file_to_file(logs_new[1],
+                                               absolute_result_path)
+
+    elif 'relative' in run_args.benchmark_strategy:
         extract_json_results_from_file_to_file(logs_new[0],
                                                relative_result_path)
 
-    if 'absolute' in run_args.benchmark_strategy:
-        extract_json_results_from_file_to_file(logs_new[1],
+    elif 'absolute' in run_args.benchmark_strategy:
+        extract_json_results_from_file_to_file(logs_new[0],
                                                absolute_result_path)
 
 
