@@ -8,24 +8,15 @@ sudo apt-get -y install bison flex libreadline-dev gawk tcl-dev libffi-dev graph
 sudo apt-get -y install libboost-python-dev libboost-filesystem-dev zlib1g-dev autoconf libevent-dev libjson-c-dev python3-pip
 sudo pip3 install gitpython
 
-# Verilator download and build
-git clone --branch stable https://github.com/verilator/verilator.git
-cd verilator
-autoconf
-./configure
-make -j $(nproc)
-sudo make install
-cd ..
-
 # Get Embench
-git clone --branch embench-tester https://github.com/antmicro/embench-iot.git Embench
+mv third_party/Embench Embench
 
 # Adding integration tools to Embench
 mv ./config/sim/ ./Embench/config/
 mv ./pylib/run_litex_sim.py ./Embench/pylib/run_litex_sim.py
 
 # LiteX install
-git clone --branch embench-tester https://github.com/antmicro/litex
+mv third_party/litex litex/
 mv litex/litex_setup.py .
 chmod +x litex_setup.py
 ./litex_setup.py init install --user
@@ -35,6 +26,15 @@ pip3 install git+https://github.com/m-labs/nmigen.git
 pip3 install nmigen-yosys
 
 cd third_party
+
+# Verilator build
+cd verilator
+autoconf
+./configure
+make -j $(nproc)
+sudo make install
+cd ..
+
 # yosys download and install
 cd yosys
 make config-gcc

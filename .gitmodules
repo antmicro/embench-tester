@@ -7,3 +7,15 @@
 [submodule "third_party/ghdl-yosys-plugin"]
 	path = third_party/ghdl-yosys-plugin
 	url = https://github.com/ghdl/ghdl-yosys-plugin.git
+[submodule "third_party/litex"]
+	path = third_party/litex
+	url = https://github.com/antmicro/litex.git
+	branch = embench-tester
+[submodule "third_party/Embench"]
+	path = third_party/Embench
+	url = https://github.com/antmicro/embench-iot.git
+	branch = embench-tester
+[submodule "third_party/verilator"]
+	path = third_party/verilator
+	url = http://github.com/verilator/verilator.git
+	branch = stable

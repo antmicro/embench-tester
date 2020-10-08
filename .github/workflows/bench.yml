@@ -20,6 +20,8 @@ jobs:
         benchmark-type: [relative, absolute]
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: true
       - name: Instalation and simulation ${{ matrix.core-type }} ${{ matrix.benchmark-type }}
         run: |
           chmod +x install.sh
