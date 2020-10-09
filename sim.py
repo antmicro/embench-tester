@@ -101,6 +101,7 @@ def sim_configuration(args, soc_kwargs, builder_kwargs):
     if soc_kwargs["uart_name"] == "serial":
         soc_kwargs["uart_name"] = "sim"
         sim_config.add_module("serial2console", "serial")
+    soc_kwargs['integrated_rom_size'] = 0x10000
     if args.rom_init:
         soc_kwargs["integrated_rom_init"] = get_mem_data(  # noqa: F405
                 args.rom_init, cpu.endianness)

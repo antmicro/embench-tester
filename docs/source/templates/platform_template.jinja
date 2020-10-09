@@ -1,0 +1,37 @@
+Platform
+########
+.. csv-table::
+    :file: {{file_path}}
+    :header-rows: 1
+
+Used tools:
+***********
+Toolchains:
+***********
+{% set toolchain_to_arch = {
+   "riscv64": "RISC-V",
+   "lm32": "LM32",
+   "or1k": "OpenRISC",
+   "ppc64le": "OpenPOWER",
+   "powerpc64le": "OpenPOWER" } -%}
+{% set tools = toolchain|unique -%}
+{% for tool in tools -%}
+        {% set tool_short = tool.split('-')[0] -%}
+{{':'}}{{toolchain_to_arch[tool_short]}}{{':\n'-}}
+{{"\t"}}{{tool}}{{"\n\n"-}}
+{% endfor -%}
+Other tools:
+************
+:verilator:
+{% for i in verilator|unique -%}
+{{'\t'}}{{i|trim}}{{'\n\n'-}}
+{% endfor %}
+:yosys:
+{% for i in yosys|unique -%}
+{{'\t'}}{{i|trim}}{{'\n\n'-}}
+{% endfor %}
+:ghdl:
+{% for i in ghdl|unique -%}
+{{'\t'}}{{i|trim|replace('\n ','\n')|replace('\n','\n\t')}}{{'\n\n'-}}
+{% endfor %}
+

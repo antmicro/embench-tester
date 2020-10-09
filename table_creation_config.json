@@ -1,0 +1,75 @@
+{
+  "tables": [
+    {
+      "file_names": "result.json",
+      "skip": [
+        "speed geometric standard deviation",
+        "speed geometric mean"
+      ],
+      "corner": [
+        ""
+      ],
+      "keys": [
+	["detailed speed results"]
+      ],
+      "mult_value": 100,
+      "exclude_mult": [],
+      "output_file_csv": "relative_results.csv"
+    },
+    {
+      "file_names": "result.json",
+      "skip": [
+        "detailed speed results"
+      ],
+      "corner": [
+        ""
+      ],
+      "mult_value": 100,
+      "exclude_mult": [
+      	"speed geometric standard deviation"
+      ],
+      "output_file_csv": "relative_results_statistics.csv"
+    },
+    {
+      "file_names": "result_abs.json",
+      "skip": [
+        "speed geometric standard deviation",
+        "speed geometric mean"
+      ],
+      "corner": [
+        ""
+      ],
+      "keys": [
+	["detailed speed results"]
+      ],
+      "output_file_csv": "absolute_results.csv"
+    },
+    {
+      "file_names": "result_abs.json",
+      "skip": [
+        "detailed speed results"
+      ],
+      "corner": [
+        ""
+      ],
+      "output_file_csv": "absolute_results_statistics.csv"
+    },
+    {
+      "file_names": "platform.json",
+      "corner": [
+        ""
+      ],
+      "keys": [
+	["CPU"]
+      ],
+      "header": ["Core", "SHA1"],
+      "output_file_csv": "cpu_sha.csv",
+      "output_file_rst": "platform.rst",
+      "template_name": "platform_template.jinja",
+      "template_dict": {
+        "title": "Benchmark statistics:",
+        "file_path": "cpu_sha.csv"
+      }
+    }
+  ]
+}

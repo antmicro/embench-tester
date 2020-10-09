@@ -10,6 +10,5 @@ Welcome to Embench-LiteX tester's results!
    :maxdepth: 2
    :caption: Contents:
 
-.. include:: relative_results.rst
-.. include:: absolute_results.rst
+.. include:: tables.rst
 .. include:: platform.rst
