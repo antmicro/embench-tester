@@ -42,7 +42,7 @@ def collect_cpu_and_toolchain_data(cpu_report, mode):
         d[sw] = d[sw].replace('\n', ' ')
 
     os.chdir(f'{cpu_report["CPU"]}')
-    platform_data = open(f'{mode}_platform.json', 'w')
+    platform_data = open('platform.json', 'w+')
     platform_data.write(json.dumps(d))
     platform_data.close()
     os.chdir(os.pardir)
@@ -54,7 +54,7 @@ def extract_json_results_from_file_to_file(path_to_extract, path_to_save):
     result_f.close()
     match = re.search('"speed results" :\\s*({[\\s\\S]*})', content, re.S)
 
-    result_json = open(path_to_save, 'w')
+    result_json = open(path_to_save, 'w+')
     result_json.write(match.group(1))
     result_json.close()
 

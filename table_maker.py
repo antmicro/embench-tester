@@ -72,7 +72,7 @@ def scan_for_files(dirs, file_name):
 
 def create_csv_table_from_dict(_dict, header, po):
     table = dict_to_array_of_arrays(_dict)
-    with open(po, 'w', newline='') as output_file:
+    with open(po, 'w+', newline='') as output_file:
         writer = csv.writer(output_file)
         writer.writerow(header)
         writer.writerows(table)
@@ -133,7 +133,7 @@ to be excluded from template folder', default=[])
         if 'template_name' in config:
             template = env.get_template(config['template_name'])
             config['template_dict'].update(main)
-            with open(args.out_dir + '/' + config['output_file_rst'], 'w') as out:
+            with open(args.out_dir + '/' + config['output_file_rst'], 'w+') as out:
                 out.write(template.render(config['template_dict']))
 
 
