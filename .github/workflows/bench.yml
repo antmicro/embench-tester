@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         core-type: [vexriscv, serv, picorv32, minerva, cv32e40p, microwatt, lm32, mor1kx]
-        benchmark-type: [relative, absolute]
+        benchmark-type: [both]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -68,6 +68,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: gh-page
+          path: docs/build/html
       - name: Deploy page
         if: ${{ github.event_name == 'push' }}
         uses: JamesIves/github-pages-deploy-action@3.6.1
