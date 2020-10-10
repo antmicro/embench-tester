@@ -48,11 +48,12 @@ def collect_cpu_and_toolchain_data(cpu_report, mode):
     os.chdir(os.pardir)
 
 
-def extract_json_results_from_file_to_file(path_to_extract, path_to_save):
+def extract_json_results_from_file_to_file(path_to_extract, path_to_save,
+                                           beg, esc):
     result_f = open(path_to_extract, mode='r')
     content = result_f.read()
     result_f.close()
-    match = re.search('"speed results" :\\s*({[\\s\\S]*})', content, re.S)
+    match = re.search(f'{beg}({{[\\s\\S]*}}){esc}', content, re.S)
 
     result_json = open(path_to_save, 'w+')
     result_json.write(match.group(1))
@@ -127,9 +128,8 @@ When running microwatt set to at least 0x8000",
         '--benchmark-strategy',
         help="Set to absolute, relative or combination of both, to\
 test performance in given mode",
-        nargs='+',
         required=True,
-        choices=['absolute', 'relative']
+        choices=['absolute', 'relative', 'both']
     )
 
 
@@ -216,14 +216,21 @@ def main():
 
     # Bench relative speed
     if 'relative' in run_args.benchmark_strategy:
-        arglist.absolute = False
+        arglist.absolute = 1
         benchmark_speed.submodule_main(arglist, remnant)
         relative_result_path = f'./{soc_kwargs["cpu_type"]}/result.json'
 
     # Bench absolute speed
     if 'absolute' in run_args.benchmark_strategy:
-        arglist.absolute = True
+        arglist.absolute = 0
         benchmark_speed.submodule_main(arglist, remnant)
+        absolute_result_path = f'./{soc_kwargs["cpu_type"]}/result_abs.json'
+
+    # Bench both speed
+    if 'both' in run_args.benchmark_strategy:
+        arglist.absolute = 2
+        benchmark_speed.submodule_main(arglist, remnant)
+        relative_result_path = f'./{soc_kwargs["cpu_type"]}/result.json'
         absolute_result_path = f'./{soc_kwargs["cpu_type"]}/result_abs.json'
 
     # Extract results
@@ -232,11 +239,15 @@ def main():
 
     logs_new = sorted(list(logs_new))
 
-    if ['relative', 'absolute'] in run_args.benchmark_strategy:
+    if 'both' in run_args.benchmark_strategy:
         extract_json_results_from_file_to_file(logs_new[0],
-                                               relative_result_path)
-        extract_json_results_from_file_to_file(logs_new[1],
-                                               absolute_result_path)
+                                               relative_result_path,
+                                               '"speed results" :\\s*',
+                                               '\\s*"speed results"')
+        extract_json_results_from_file_to_file(logs_new[0],
+                                               absolute_result_path,
+                                               '}\\s*"speed results" :\\s*',
+                                               '\\s*All')
 
     elif 'relative' in run_args.benchmark_strategy:
         extract_json_results_from_file_to_file(logs_new[0],

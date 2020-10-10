@@ -14,7 +14,7 @@
 [submodule "third_party/Embench"]
 	path = third_party/Embench
 	url = https://github.com/antmicro/embench-iot.git
-	branch = embench-tester
+	branch = combined-results
 [submodule "third_party/verilator"]
 	path = third_party/verilator
 	url = http://github.com/verilator/verilator.git

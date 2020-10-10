@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         core-type: [vexriscv, serv, picorv32, minerva, cv32e40p, microwatt, lm32, mor1kx]
-        benchmark-type: [relative, absolute]
+        benchmark-type: [both]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -45,7 +45,7 @@ jobs:
           sudo apt-get update
           sudo apt-get -y install python3 python3-setuptools python3-pip
           sudo pip3 install tabulate
-          ./table_maker.py --dirs benching/vexriscv benching/picorv32 benching/minerva benching/cv32e40p benching/lm32 benching/mor1kx benching/microwatt --out_dir docs/source --templates_dir docs/source/templates
+          ./table_maker.py --dirs benching/vexriscv benching/picorv32 benching/minerva benching/cv32e40p benching/serv benching/lm32 benching/mor1kx benching/microwatt --out_dir docs/source --templates_dir docs/source/templates
           sudo apt-get install python3-sphinx
           cd docs
           make html
@@ -68,6 +68,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: gh-page
+          path: docs/build/html
       - name: Deploy page
         if: ${{ github.event_name == 'push' }}
         uses: JamesIves/github-pages-deploy-action@3.6.1
