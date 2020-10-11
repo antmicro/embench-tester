@@ -241,11 +241,11 @@ def main():
 
     if 'both' in run_args.benchmark_strategy:
         extract_json_results_from_file_to_file(logs_new[0],
-                                               relative_result_path,
+                                               absolute_result_path,
                                                '"speed results" :\\s*',
                                                '\\s*"speed results"')
         extract_json_results_from_file_to_file(logs_new[0],
-                                               absolute_result_path,
+                                               relative_result_path,
                                                '}\\s*"speed results" :\\s*',
                                                '\\s*All')
 
