@@ -5,7 +5,7 @@
 
 Notes:
 
-* This resultes compare performance to ARM Cortex M4 (100)
+* This results present CPU performance compared to ARM Cortex M4
 * Higher values are better
 
 .. csv-table:: Benchmark statistics:
@@ -36,5 +36,5 @@ Notes:
 Notes:
 
 * Benchmark consists of multiple invidual tests
-* Higher geometric mean is better
+* Lower geometric mean is better
 * Lower standard deviation is better, more consistent results
