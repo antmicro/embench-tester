@@ -12,68 +12,80 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+
+
   benching:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        core-type: [vexriscv, serv, picorv32, minerva, cv32e40p, microwatt, lm32, mor1kx]
-        benchmark-type: [both]
+        core-type:
+          - vexriscv
+          - serv
+          - picorv32
+          - minerva
+          - cv32e40p
+          - microwatt
+          - lm32
+          - mor1kx
     steps:
+
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - name: Instalation and simulation ${{ matrix.core-type }} ${{ matrix.benchmark-type }}
+
+      - name: Instalation and simulation ${{ matrix.core-type }}
         run: |
-          chmod +x install.sh
           ./install.sh
-          export PATH=$PATH:~/.local/bin:$PWD/or1k/bin:$PWD/lm32gcc/bin:$PWD/riscv64/bin:$PWD/ppc64le/bin
-          ./run.py --cpu-type ${{ matrix.core-type }} --threads 1 --benchmark-strategy ${{ matrix.benchmark-type }}
+          PATH=$PATH:~/.local/bin:$PWD/or1k/bin:$PWD/lm32gcc/bin:$PWD/riscv64/bin:$PWD/ppc64le/bin \
+          ./run.py --cpu-type ${{ matrix.core-type }} --threads 1 --benchmark-strategy both
+
       - uses: actions/upload-artifact@v2
         with:
           name: ${{github.job}}
           path: ./*/*.json
+
 
   # Result aggregation
   table_maker:
     runs-on: ubuntu-18.04
     needs: benching
     steps:
+
       - uses: actions/checkout@v2
+
       - uses: actions/download-artifact@v2
+
       - name: Result aggregation
         run: |
           sudo apt-get update
-          sudo apt-get -y install python3 python3-setuptools python3-pip
+          sudo apt-get -y install python3 python3-setuptools python3-pip python3-sphinx
           sudo pip3 install tabulate
-          ./table_maker.py --dirs benching/vexriscv benching/picorv32 benching/minerva benching/cv32e40p benching/serv benching/lm32 benching/mor1kx benching/microwatt --out_dir docs/source --templates_dir docs/source/templates
-          sudo apt-get install python3-sphinx
+          ./table_maker.py --dirs benching/vexriscv benching/picorv32 benching/minerva benching/cv32e40p benching/serv benching/lm32 benching/mor1kx benching/microwatt \
+          --out_dir docs/source --templates_dir docs/source/templates
           cd docs
           make html
+
       - uses: actions/upload-artifact@v2
         with:
           name: gh-page
           path: docs/build/html
+
       - uses: actions/upload-artifact@v2
         with:
           name: aggregated-results
           path: |
               docs/build/*
 
-  # GH page deployment
-  deploy_gh_page:
-    runs-on: ubuntu-18.04
-    needs: table_maker
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
-        with:
-          name: gh-page
-          path: docs/build/html
-      - name: Deploy page
-        if: ${{ github.event_name == 'push' }}
-        uses: JamesIves/github-pages-deploy-action@3.6.1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: docs/build/html
-          CLEAN: true
+      - name: Deploy to gh-pages
+        if: github.event_name == 'push'
+        run: |
+          cd docs/build/html
+          touch .nojekyll
+          git init
+          cp ../../../.git/config ./.git/config
+          git add .
+          git config --local user.email "push@gha"
+          git config --local user.name "GHA"
+          git commit -am "update ${{ github.sha }}"
+          git push -u origin +HEAD:gh-pages
+          rm -rf .git
