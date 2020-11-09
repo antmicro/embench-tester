@@ -19,6 +19,3 @@
 	path = third_party/verilator
 	url = http://github.com/verilator/verilator.git
 	branch = stable
-[submodule "third_party/sphinx_antmicro_theme"]
-	path = third_party/sphinx_antmicro_theme
-	url = https://github.com/antmicro/sphinx_antmicro_theme.git
