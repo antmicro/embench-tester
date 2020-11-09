@@ -7,7 +7,7 @@ Welcome to Embench-LiteX tester's results!
 ================================================
 
 This page presents the `Embench-tester <https://github.com/antmicro/embench-tester>`_ results.
-The data was obtained by simulating a LiteX based SoC design instantiating the tested core.
+The data was obtained by simulating a `LiteX <https://github.com/enjoy-digital/litex>`_ based SoC design instantiating the tested core.
 All the cores where tested in LiteX' standard configuration.
 
 
