@@ -16,7 +16,8 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
-import sphinx_antmicro_theme
+from sphinx_antmicro_theme import __version__, get_html_theme_path
+theme_path = get_html_theme_path() + "/sphinx_antmicro_theme"
 
 # -- Project information -----------------------------------------------------
 
@@ -34,15 +35,26 @@ release = ''
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
-# needs_sphinx = '1.0'
+needs_sphinx = '1.8'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
     'sphinx.ext.githubpages',
-    'sphinx_antmicro_theme'
+    'sphinx.ext.todo',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.extlinks',
 ]
+
+dev = 'https://github.com/antmicro/embench-tester/'
+
+extlinks = {
+    'issue' : (dev + 'issues/%s', '#')
+}
+
+numfig = True
+todo_include_todos = False
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -69,8 +81,9 @@ language = None
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = None
+pygments_style = 'sphinx'
 
+today_fmt = '%Y-%m-%d'
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -100,6 +113,13 @@ html_static_path = ['_static']
 #
 # html_sidebars = {}
 
+html_title = project
+
+html_logo = theme_path+'/logo-400-html.png'
+
+html_last_updated_fmt = today_fmt
+
+html_show_sphinx = False
 
 # -- Options for HTMLHelp output ---------------------------------------------
 

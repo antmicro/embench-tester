@@ -52,17 +52,15 @@ jobs:
     steps:
 
       - uses: actions/checkout@v2
-        with:
-          submodules: true
 
       - uses: actions/download-artifact@v2
 
       - name: Result aggregation
         run: |
           sudo apt-get update
-          sudo apt-get -y install python3 python3-setuptools python3-pip python3-sphinx
+          sudo apt-get -y install python3 python3-setuptools python3-pip python3-sphinx git
           sudo pip3 install tabulate
-          sudo pip3 install third_party/sphinx_antmicro_theme
+          sudo pip3 install git+https://github.com/antmicro/sphinx_antmicro_theme.git
           ./table_maker.py --dirs benching/vexriscv benching/picorv32 benching/minerva benching/cv32e40p benching/serv benching/lm32 benching/mor1kx benching/microwatt \
           --out_dir docs/source --templates_dir docs/source/templates
           cd docs

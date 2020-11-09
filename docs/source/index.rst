@@ -6,6 +6,11 @@
 Welcome to Embench-LiteX tester's results!
 ================================================
 
+This page presents the `Embench-tester <https://github.com/antmicro/embench-tester>`_ results.
+The data was obtained by simulating a LiteX based SoC design instantiating the tested core.
+All the cores where tested in LiteX' standard configuration.
+
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
