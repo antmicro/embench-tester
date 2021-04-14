@@ -1,5 +1,7 @@
 ## Embench tester
 
+Copyright (c) 2020-2021 [Antmicro](https://www.antmicro.com)
+
 This project is an open source tool for benchmarking CPU cores available in the [LiteX SoC builder](https://github.com/enjoy-digital/litex)
 The cores are tested with the [Embench](https://github.com/embench/embench-iot) open source test suite for embedded systems.
 LiteX is a toolset for building Systems-on-a-Chip with many CPU cores and with support for multiple architectures, e.g. RISC-V, OpenPOWER or OpenRISC.
