@@ -1,4 +1,4 @@
-## Embench tester
+# Embench tester
 
 Copyright (c) 2020-2021 [Antmicro](https://www.antmicro.com)
 
