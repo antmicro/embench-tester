@@ -49,7 +49,7 @@ jobs:
           make env
           source env/conda/bin/activate embench-tester
           ./install.sh
-          ./run.py --cpu-type ${{ matrix.core-type }} --threads $nproc --benchmark-strategy both
+          ./run.py --cpu-type ${{ matrix.core-type }} --threads $(nproc) --benchmark-strategy both
 
       - uses: actions/upload-artifact@v2
         with:

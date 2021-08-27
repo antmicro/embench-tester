@@ -24,7 +24,7 @@ cd third_party
 cd ghdl
 ./configure --prefix=/usr/local
 make -j $(nproc)
-sudo -E make install
+sudo make install
 cd ..
 
 # yosys-gdhl-plugin download and install
