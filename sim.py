@@ -124,7 +124,8 @@ def sim_configuration(args, soc_kwargs, builder_kwargs):
                         trace=args.trace,
                         trace_fst=args.trace_fst,
                         trace_start=int(args.trace_start),
-                        trace_end=int(args.trace_end))
+                        trace_end=int(args.trace_end),
+                        interactive=False)
     if args.run_sim:
         builder.build(build=False, threads=args.threads,
                       sim_config=sim_config,
@@ -132,7 +133,8 @@ def sim_configuration(args, soc_kwargs, builder_kwargs):
                       trace=args.trace,
                       trace_fst=args.trace_fst,
                       trace_start=int(args.trace_start),
-                      trace_end=int(args.trace_end))
+                      trace_end=int(args.trace_end),
+                    interactive=False)
 
 
 def main():
