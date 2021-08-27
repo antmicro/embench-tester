@@ -19,8 +19,9 @@ SECTIONS
 		_etext = .;
 	} > main_ram
 
-	.rodata : ALIGN(8)
+	.rodata :
 	{
+		. = ALIGN(8);
 		_frodata = .;
 		*(.rodata .rodata.* .gnu.linkonce.r.*)
 		*(.rodata1)
@@ -34,15 +35,16 @@ SECTIONS
 		_erodata = .;
 	} > main_ram
 
-	.commands : ALIGN(8)
+	.commands :
 	{
 		PROVIDE_HIDDEN (__bios_cmd_start = .);
 		KEEP(*(.bios_cmd))
 		PROVIDE_HIDDEN (__bios_cmd_end = .);
 	} > main_ram 
 
-	.data : ALIGN(8)
+	.data :
 	{
+		. = ALIGN(8);
 		_fdata = .;
 		*(.data .data.* .gnu.linkonce.d.*)
 		*(.data1)
@@ -55,8 +57,9 @@ SECTIONS
 		_edata = .;
 	} > main_ram
 
-	.bss : ALIGN(8)
+	.bss :
 	{
+		. = ALIGN(8);
 		_fbss = .;
 		*(.dynsbss)
 		*(.sbss .sbss.* .gnu.linkonce.sb.*)
@@ -68,8 +71,6 @@ SECTIONS
 		_ebss = .;
 		_end = .;
 	} > main_ram
-	. = ALIGN(4);
-	PROVIDE(__heap_start = . );
 
 	/DISCARD/ :
 	{
@@ -78,9 +79,7 @@ SECTIONS
 	}
 }
 
-PROVIDE(__heap_end = ORIGIN(main_ram) + LENGTH(main_ram));
-
-PROVIDE(_fstack = ORIGIN(sram) + LENGTH(sram));
+PROVIDE(_fstack = ORIGIN(sram) + LENGTH(sram) - 8);
 
 PROVIDE(_fdata_rom = LOADADDR(.data));
 PROVIDE(_edata_rom = LOADADDR(.data) + SIZEOF(.data));

@@ -1,3 +1,6 @@
+[submodule "third_party/yosys"]
+	path = third_party/yosys
+	url = https://github.com/YosysHQ/yosys.git
 [submodule "third_party/ghdl"]
 	path = third_party/ghdl
 	url = https://github.com/ghdl/ghdl.git
@@ -12,6 +15,7 @@
 	path = third_party/Embench
 	url = https://github.com/antmicro/embench-iot.git
 	branch = combined-results
-[submodule "third_party/make-env"]
-	path = third_party/make-env
-	url = https://github.com/SymbiFlow/make-env.git
+[submodule "third_party/verilator"]
+	path = third_party/verilator
+	url = http://github.com/verilator/verilator.git
+	branch = stable

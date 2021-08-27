@@ -19,10 +19,7 @@ def collect_cpu_and_toolchain_data(cpu_report, mode):
     working_dir = os.getcwd()
     d = {}
 
-    if (cpu_report["CPU"] == "ibex"):
-        os.chdir(f'pythondata-misc-opentitan')
-    else:
-        os.chdir(f'pythondata-cpu-{cpu_report["CPU"]}')
+    os.chdir(f'pythondata-cpu-{cpu_report["CPU"]}')
     repo = Repo(os.getcwd())
     d['CPU'] = {
         cpu_report['CPU']: repo.head.commit.hexsha
@@ -63,7 +60,7 @@ def extract_json_results_from_file_to_file(path_to_extract, path_to_save,
     result_json.close()
 
 
-def prepare_arguments_for_build_all(soc_kwargs, cpu_par):
+def prepare_arguments_for_build_all(soc_kwargs, dict):
     args = argparse.Namespace()
     args.arch = "sim"
     args.chip = 'generic'
@@ -81,24 +78,23 @@ def prepare_arguments_for_build_all(soc_kwargs, cpu_par):
     args.cpu_mhz = None
     args.warmup_heat = None
     args.timeout = 5
-    args.cc = f"{cpu_par['TRIPLE']}-gcc"
-    args.cflags = f'-v -I{cpu_par["BUILDINC_DIRECTORY"]} \
--I{cpu_par["BUILDINC_DIRECTORY"]}/../libc \
--I{cpu_par["CPU_DIRECTORY"]} -I{cpu_par["SOC_DIRECTORY"]}/software/include \
--std=gnu99 {cpu_par["CPUFLAGS"]} -I{cpu_par["PICOLIBC_DIRECTORY"]}/newlib/libc/tinystdio \
--I{cpu_par["PICOLIBC_DIRECTORY"]}/newlib/libc/include -O2 -ffunction-sections'
-    args.user_libs = f'{cpu_par["BUILDINC_DIRECTORY"]}/../bios/crt0.o \
--L{cpu_par["BUILDINC_DIRECTORY"]} -L{cpu_par["BUILDINC_DIRECTORY"]}/../libc \
--L{cpu_par["BUILDINC_DIRECTORY"]}/../libcompiler_rt \
--L{cpu_par["BUILDINC_DIRECTORY"]}/../libcomm \
-{cpu_par["BUILDINC_DIRECTORY"]}/../bios/isr.o \
--lcompiler_rt -lc -lcomm -lgcc'
-    args.ldflags = f'-nostdlib -nodefaultlibs -nolibc -Wl,--verbose {cpu_par["CPUFLAGS"]}\
-            -T{cpu_par["BUILDINC_DIRECTORY"]}/../../linker.ld -N'
+    args.cc = f"{dict['TRIPLE']}-gcc"
+    args.cflags = f'-v -nostdinc -I{dict["BUILDINC_DIRECTORY"]} \
+-I{dict["CPU_DIRECTORY"]} -I{dict["SOC_DIRECTORY"]}/software/include/base \
+-I{dict["SOC_DIRECTORY"]}/software/include -std=gnu99 {dict["CPUFLAGS"]} \
+-O2 -ffunction-sections'
+    args.user_libs = f'{dict["BUILDINC_DIRECTORY"]}/../libbase/crt0.o \
+-L{dict["BUILDINC_DIRECTORY"]} -L{dict["BUILDINC_DIRECTORY"]}/../libbase \
+-L{dict["BUILDINC_DIRECTORY"]}/../libm \
+-L{dict["BUILDINC_DIRECTORY"]}/../libcompiler_rt \
+{dict["BUILDINC_DIRECTORY"]}/../bios/isr.o -lm -lbase-nofloat \
+-lcompiler_rt -lgcc'
+    args.ldflags = f'-nostdlib -nodefaultlibs -Wl,--verbose {dict["CPUFLAGS"]}\
+            -T{dict["BUILDINC_DIRECTORY"]}/../../linker.ld -N'
     args.clean = True
     args.logdir = f'../{soc_kwargs["cpu_type"]}/logs'
     args.builddir = f'../{soc_kwargs["cpu_type"]}/benchmarks'
-    args.binary_converter = f'{cpu_par["TRIPLE"]}-objcopy'
+    args.binary_converter = f'{dict["TRIPLE"]}-objcopy'
     args.verbose = None
     return args
 
@@ -209,7 +205,6 @@ def main():
     arglist.baselinedir = 'baseline-data'
     arglist.json_comma = False
     arglist.change_dir = False
-    arglist.sim_parallel = False
 
     remnant = f'--cpu-type {args.cpu_type}'.split()
     remnant.extend(f'--cpu-variant {args.cpu_variant}'.split())
