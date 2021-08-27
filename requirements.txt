@@ -1,0 +1,5 @@
+git+https://github.com/m-labs/nmigen.git
+nmigen-yosys
+gitpython
+meson
+ninja
