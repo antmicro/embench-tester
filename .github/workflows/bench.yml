@@ -24,7 +24,7 @@ jobs:
           - serv
           - picorv32
           - minerva
-#          - rocket
+          - rocket
 #          - blackparrot
           - cv32e40p
           - microwatt
