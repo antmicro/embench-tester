@@ -55,7 +55,7 @@ SECTIONS
 		_edata = .;
 	} > main_ram
 
-	.bss : ALIGN(8)
+	.bss : ALIGN(8) SUBALIGN(8)
 	{
 		_fbss = .;
 		*(.dynsbss)
@@ -68,7 +68,7 @@ SECTIONS
 		_ebss = .;
 		_end = .;
 	} > main_ram
-	. = ALIGN(4);
+	. = ALIGN(8);
 	PROVIDE(__heap_start = . );
 
 	/DISCARD/ :

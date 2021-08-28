@@ -154,6 +154,8 @@ def main():
 
     if (args.cpu_type == 'microwatt'):
         args.cpu_variant = 'standard+ghdl'
+    elif (args.cpu_type == 'blackparrot'):
+        args.cpu_variant = 'sim'
     else:
         args.cpu_variant = 'standard'
 
@@ -205,7 +207,7 @@ def main():
     arglist.logdir = f'../{soc_kwargs["cpu_type"]}/logs'
     arglist.output_format = benchmark_speed.output_format.JSON
     arglist.target_module = 'run_litex_sim'
-    arglist.timeout = 43200
+    arglist.timeout = 7200
     arglist.baselinedir = 'baseline-data'
     arglist.json_comma = False
     arglist.change_dir = False
