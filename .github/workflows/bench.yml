@@ -37,20 +37,11 @@ jobs:
           submodules: true
 
       - name: Instalation and simulation ${{ matrix.core-type }}
-        if: ${{ matrix.core-type != 'rocket' }}
         run: |
           make env
           source env/conda/bin/activate embench-tester
           ./install.sh
           ./run.py --cpu-type ${{ matrix.core-type }} --threads 1 --benchmark-strategy both
-
-      - name: Instalation and simulation ${{ matrix.core-type }}
-        if: ${{ matrix.core-type == 'rocket' }}
-        run: |
-          make env
-          source env/conda/bin/activate embench-tester
-          ./install.sh
-          ./run.py --cpu-type ${{ matrix.core-type }} --threads $(nproc) --benchmark-strategy both
 
       - uses: actions/upload-artifact@v2
         if: ${{ always() }}
@@ -78,7 +69,7 @@ jobs:
           sudo pip3 install tabulate sphinx 
           sudo pip3 install -Iv jinja2==2.10
           sudo pip3 install git+https://github.com/antmicro/sphinx_antmicro_theme.git
-          ./table_maker.py --dirs benching/vexriscv benching/picorv32 benching/minerva benching/cv32e40p benching/serv benching/lm32 benching/mor1kx benching/microwatt benching/ibex \
+          ./table_maker.py --dirs benching/vexriscv benching/picorv32 benching/minerva benching/cv32e40p benching/serv benching/lm32 benching/mor1kx benching/microwatt benching/ibex benching/rocket \
           --out_dir docs/source --templates_dir docs/source/templates
           cd docs
           make html
