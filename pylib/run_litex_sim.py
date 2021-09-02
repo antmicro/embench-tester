@@ -41,7 +41,16 @@ def get_target_args(remnant):
         type=int,
         default=0x200
     )
-
+    parser.add_argument(
+        '--bus-data-width',
+        type=int,
+        default=32
+    )
+    parser.add_argument(
+        "--use-cache",
+        default=False,
+        help="Use caches in rocket chip"
+    )
     return parser.parse_args(remnant)
 
 
@@ -56,6 +65,8 @@ def build_benchmark_cmd(bench, args):
                 f'{args.cpu_type}/benchmarks/src/{bench}/{bench}.bin',
                 '--run-sim=True'])
     cmd.extend(f'--output-dir ./{args.cpu_type}'.split())
+    cmd.extend(f'--bus-data-width {args.bus_data_width}'.split())
+    cmd.extend(f'--use-cache {args.use_cache}'.split())
     cmd.extend(f'--threads {args.threads} --opt-level O3 \
 --integrated-sram-size {args.integrated_sram_size}'.split())
     return cmd

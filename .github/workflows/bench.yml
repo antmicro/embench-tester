@@ -41,7 +41,89 @@ jobs:
           make env
           source env/conda/bin/activate embench-tester
           ./install.sh
-          ./run.py --cpu-type ${{ matrix.core-type }} --threads 1 --benchmark-strategy both
+          ./run.py --cpu-type ${{ matrix.core-type }} --threads 2 --benchmark-strategy both
+
+      - uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: ${{github.job}}
+          path: |
+            ./*/*.json
+            ./**/*.log
+
+  benching64:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        core-type:
+          - rocket
+          - microwatt
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Instalation and simulation ${{ matrix.core-type }}
+        run: |
+          make env
+          source env/conda/bin/activate embench-tester
+          ./install.sh
+          ./run.py --cpu-type ${{ matrix.core-type }} --threads 2 --benchmark-strategy both --bus-data-width 64
+
+      - uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: ${{github.job}}
+          path: |
+            ./*/*.json
+            ./**/*.log
+
+  benching64_cache:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        core-type:
+          - rocket
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Instalation and simulation ${{ matrix.core-type }}
+        run: |
+          make env
+          source env/conda/bin/activate embench-tester
+          ./install.sh
+          ./run.py --cpu-type ${{ matrix.core-type }} --threads 2 --benchmark-strategy both --bus-data-width 64 --use-cache True
+
+      - uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: ${{github.job}}
+          path: |
+            ./*/*.json
+            ./**/*.log
+
+  benching_cache:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        core-type:
+          - rocket
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Instalation and simulation ${{ matrix.core-type }}
+        run: |
+          make env
+          source env/conda/bin/activate embench-tester
+          ./install.sh
+          ./run.py --cpu-type ${{ matrix.core-type }} --threads 2 --benchmark-strategy both --use-cache True
 
       - uses: actions/upload-artifact@v2
         if: ${{ always() }}
@@ -55,7 +137,7 @@ jobs:
   # Result aggregation
   table_maker:
     runs-on: ubuntu-20.04
-    needs: benching
+    needs: [benching, benching64, benching_cache, benching64_cache]
     steps:
 
       - uses: actions/checkout@v2
@@ -69,7 +151,7 @@ jobs:
           sudo pip3 install tabulate sphinx 
           sudo pip3 install -Iv jinja2==2.10
           sudo pip3 install git+https://github.com/antmicro/sphinx_antmicro_theme.git
-          ./table_maker.py --dirs benching/vexriscv benching/picorv32 benching/minerva benching/cv32e40p benching/serv benching/lm32 benching/mor1kx benching/microwatt benching/ibex benching/rocket \
+          ./table_maker.py --dirs benching/vexriscv benching/picorv32 benching/minerva benching/cv32e40p benching/serv benching/lm32 benching/mor1kx benching/microwatt benching/ibex benching/rocket benchin64/rocket benching64/microwatt benching64_cache/rocket benching_cache/rocket \
           --out_dir docs/source --templates_dir docs/source/templates
           cd docs
           make html

@@ -129,6 +129,17 @@ When running microwatt set to at least 0x8000",
         default=0x8000
     )
     parser.add_argument(
+        '--bus-data-width',
+        help="Set SoC internal bus data width\n\
+Only Rocket and Microwatt should use 64 bit busses",
+        default=32
+    )
+    parser.add_argument(
+        "--use-cache",
+        default=False,
+        help="Use caches in rocket chip"
+    )
+    parser.add_argument(
         '--benchmark-strategy',
         help="Set to absolute, relative or combination of both, to\
 test performance in given mode",
@@ -216,6 +227,8 @@ def main():
     remnant = f'--cpu-type {args.cpu_type}'.split()
     remnant.extend(f'--cpu-variant {args.cpu_variant}'.split())
     remnant.extend(f'--threads {args.threads}'.split())
+    remnant.extend(f'--bus-data-width {args.bus_data_width}'.split())
+    remnant.extend(f'--use-cache {args.use_cache}'.split())
     remnant.extend(f'--integrated-sram-size \
 {args.integrated_sram_size}'.split())
 
