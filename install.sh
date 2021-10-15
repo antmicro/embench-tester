@@ -30,7 +30,7 @@ cd ..
 # yosys-gdhl-plugin download and install
 cd ghdl-yosys-plugin
 make -j $(nproc)
-sudo -E make install
+make install
 cd ..
 
 cd ..
