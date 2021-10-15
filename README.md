@@ -25,8 +25,9 @@ This project consists of the following files:
 To install LiteX, Embench and all required software run:
 
 ```
+make env
+source env/conda/bin/activate embench-tester
 sudo ./install.sh
-export PATH=$PATH:~/.local.bin:$(echo $PWD/riscv64-*/bin/):$PWD/or1k/bin:$PWD/lm32gcc/bin
 ```
 
 It will install required repositories to curent directory.
@@ -48,6 +49,8 @@ Currently available targets are:
 * mor1kx
 * microwatt
 * lm32
+* Ibex
+* Rocket
 
 The results are provided as a set of json files stored in a directory named after the tested CPU.
 To create the summarizing tables, run the ``./table_maker.py`` script.

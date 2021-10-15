@@ -1,7 +1,7 @@
 name: embench-tester
 channels:
     - defaults
-    - litex-hub/label/ci-aj-riscv-medany-1174919865
+    - antmicro/label/riscv64-medany-gcc-newlib
     - litex-hub
     - conda-forge
 dependencies:
@@ -13,7 +13,7 @@ dependencies:
     - litex-hub::gcc-lm32-elf-newlib=9.2.0=20210513_184432
     - litex-hub::gcc-or1k-elf-newlib=9.2.0=20210513_184432
     - litex-hub::gcc-ppc64le-linux-musl=9.2.0=20210513_184432
-    - litex-hub/label/ci-aj-riscv-medany-1174919865::gcc-riscv64-elf-newlib=9.2.0=20210827_162146
+    - antmicro/label/riscv64-medany-gcc-newlib::gcc-riscv64-elf-newlib=9.2.0=20210827_162146
     - conda-forge::gcc_impl_linux-64=10.3.0
     - pip
     - pip:

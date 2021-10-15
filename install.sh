@@ -1,9 +1,9 @@
 #!/bin/bash
-# build essensials     
+# build essensials
 set -e
 
 sudo apt update
-sudo apt install -y gnat-9
+sudo apt install -y gnat
 
 # Get Embench
 mv third_party/Embench Embench
@@ -24,13 +24,13 @@ cd third_party
 cd ghdl
 ./configure --prefix=/usr/local
 make -j $(nproc)
-make install
+sudo -E make install
 cd ..
 
 # yosys-gdhl-plugin download and install
 cd ghdl-yosys-plugin
 make -j $(nproc)
-make install
+sudo -E make install
 cd ..
 
 cd ..
