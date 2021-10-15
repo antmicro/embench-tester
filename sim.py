@@ -90,6 +90,9 @@ def sim_args(parser):
     parser.add_argument("--run-sim",
                         default=False,
                         help="True to simulate")
+    parser.add_argument("--use-cache",
+                        default=False,
+                        help="Use caches in rocket chip")
 
 
 def sim_configuration(args, soc_kwargs, builder_kwargs):
@@ -111,8 +114,18 @@ def sim_configuration(args, soc_kwargs, builder_kwargs):
                 args.ram_init, cpu.endianness)
 
     # SoC ---------------------------------------------------------------------
+    if args.cpu_type == 'rocket' and not args.use_cache:
+        soc_kwargs["user_override"] = {"main_ram": 0x40000000}
     soc = SimSoC(
         **soc_kwargs)
+    if args.cpu_type == 'rocket' and args.use_cache:
+        for bus in soc.cpu.memory_buses:
+            wb = wishbone.Interface(data_width=bus.data_width,
+                    adr_width=bus.address_width-log2_int(bus.data_width//8))
+            conv = ResetInserter()(axi.AXI2Wishbone(bus, wb, base_address=0))
+            soc.submodules += conv
+            soc.bus.add_master(name="attached memory bus {}".format(wb), master=wb)
+
     if args.ram_init is not None:
         soc.add_constant("ROM_BOOT_ADDRESS", soc.mem_map["main_ram"])
     # Build/Run ---------------------------------------------------------------
@@ -124,7 +137,8 @@ def sim_configuration(args, soc_kwargs, builder_kwargs):
                         trace=args.trace,
                         trace_fst=args.trace_fst,
                         trace_start=int(args.trace_start),
-                        trace_end=int(args.trace_end))
+                        trace_end=int(args.trace_end),
+                        interactive=False)
     if args.run_sim:
         builder.build(build=False, threads=args.threads,
                       sim_config=sim_config,
@@ -132,7 +146,8 @@ def sim_configuration(args, soc_kwargs, builder_kwargs):
                       trace=args.trace,
                       trace_fst=args.trace_fst,
                       trace_start=int(args.trace_start),
-                      trace_end=int(args.trace_end))
+                      trace_end=int(args.trace_end),
+                    interactive=False)
 
 
 def main():
