@@ -64,7 +64,7 @@ def build_benchmark_cmd(bench, args):
     cmd.extend(['--ram-init',
                 f'{args.cpu_type}/benchmarks/src/{bench}/{bench}.bin',
                 '--run-sim=True'])
-    cmd.extend(f'--output-dir ./{args.cpu_type}'.split())
+    cmd.extend(f'--output-dir ./{args.cpu_type}/{bench}'.split())
     cmd.extend(f'--bus-data-width {args.bus_data_width}'.split())
     cmd.extend(f'--use-cache {args.use_cache}'.split())
     cmd.extend(f'--threads {args.threads} --opt-level O3 \

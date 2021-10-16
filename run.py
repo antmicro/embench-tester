@@ -222,7 +222,7 @@ def main():
     arglist.baselinedir = 'baseline-data'
     arglist.json_comma = False
     arglist.change_dir = False
-    arglist.sim_parallel = False
+    arglist.sim_parallel = True
 
     remnant = f'--cpu-type {args.cpu_type}'.split()
     remnant.extend(f'--cpu-variant {args.cpu_variant}'.split())
