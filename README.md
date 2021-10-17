@@ -27,8 +27,11 @@ To install LiteX, Embench and all required software run:
 ```
 make env
 source env/conda/bin/activate embench-tester
-sudo ./install.sh
+./install.sh
 ```
+Install script will install modified version of litex as well as
+it'll install ghdl and ghdl-yosys-plugin from source.
+
 
 It will install required repositories to curent directory.
 
