@@ -151,7 +151,11 @@ jobs:
           sudo pip3 install tabulate sphinx
           sudo pip3 install -Iv jinja2==2.10
           sudo pip3 install git+https://github.com/antmicro/sphinx_antmicro_theme.git
-          ./table_maker.py --dirs benching/vexriscv benching/picorv32 benching/minerva benching/cv32e40p benching/serv benching/lm32 benching/mor1kx benching/microwatt benching/ibex benching/rocket benchin64/rocket benching64/microwatt benching64_cache/rocket benching_cache/rocket \
+          ./table_maker.py --dirs \
+          benching/cv32e40p_standard_32_False benching/ibex_standard_32_False \
+          benching/ibex_standard_32_False benching/lm32_standard_32_False benching/microwatt_standard\+ghdl_32_False \
+          benching/minerva_standard_32_False benching/mor1kx_standard_32_False benching/picorv32_standard_32_False \
+          benching/vexriscv_standard_32_False benchin64/microwatt_standard\+ghdl_64_False \
           --out_dir docs/source --templates_dir docs/source/templates
           cd docs
           make html
