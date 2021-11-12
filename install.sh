@@ -24,7 +24,7 @@ cd third_party
 
 # ghdl download and install
 cd ghdl
-./configure --prefix=$BASE_DIR/env/conda/envs/embench-tester/bin
+./configure --prefix=$BASE_DIR/env/conda/envs/embench-tester
 make -j $(nproc)
 make install
 cd ..
