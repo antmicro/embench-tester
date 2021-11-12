@@ -87,15 +87,18 @@ def sim_args(parser):
     parser.add_argument("--opt-level",
                         default="O3",
                         help="Compilation optimization level")
-    parser.add_argument("--run-sim",
+    parser.add_argument("--run",
                         default=False,
-                        help="True to simulate")
+                        help="True to run test")
+    parser.add_argument("--arty",
+                        default=False,
+                        help="True to run test on arty")
     parser.add_argument("--use-cache",
                         default=False,
                         help="Use caches in rocket chip")
 
 
-def sim_configuration(args, soc_kwargs, builder_kwargs):
+def sim_configuration(args, soc_kwargs, builder_kwargs, test_path):
 
     # Configuration -----------------------------------------------------------
 
@@ -131,16 +134,8 @@ def sim_configuration(args, soc_kwargs, builder_kwargs):
     # Build/Run ---------------------------------------------------------------
 
     builder = Builder(soc, **builder_kwargs)  # noqa: F405
-    vns = builder.build(run=False, threads=args.threads,  # noqa: F841
-                        sim_config=sim_config,
-                        opt_level=args.opt_level,
-                        trace=args.trace,
-                        trace_fst=args.trace_fst,
-                        trace_start=int(args.trace_start),
-                        trace_end=int(args.trace_end),
-                        interactive=False)
-    if args.run_sim:
-        builder.build(build=False, threads=args.threads,
+    if args.run:
+        builder.build(threads=args.threads,
                       sim_config=sim_config,
                       opt_level=args.opt_level,
                       trace=args.trace,
@@ -148,6 +143,59 @@ def sim_configuration(args, soc_kwargs, builder_kwargs):
                       trace_start=int(args.trace_start),
                       trace_end=int(args.trace_end),
                     interactive=False)
+    else:
+        builder.build(run=False, threads=args.threads,  # noqa: F841
+                        sim_config=sim_config,
+                        opt_level=args.opt_level,
+                        trace=args.trace,
+                        trace_fst=args.trace_fst,
+                        trace_start=int(args.trace_start),
+                        trace_end=int(args.trace_end),
+                        interactive=False)
+
+
+def arty_configuration(args, soc_kwargs, builder_kwargs, test_path):
+
+    from litex_boards.targets import arty
+
+    # Configuration -----------------------------------------------------------
+
+    cpu = CPUS[soc_kwargs.get("cpu_type", "vexriscv")]
+    soc_kwargs['integrated_rom_size'] = 0x10000
+    if args.rom_init:
+        soc_kwargs["integrated_rom_init"] = get_mem_data(  # noqa: F405
+                args.rom_init, cpu.endianness)
+    soc_kwargs["integrated_main_ram_size"] = 0x20000 # 4KiB
+    if args.ram_init is not None:
+        soc_kwargs["integrated_main_ram_init"] = get_mem_data(  # noqa: F405
+                args.ram_init, cpu.endianness)
+
+    # SoC ---------------------------------------------------------------------
+    if args.cpu_type == 'rocket' and not args.use_cache:
+        soc_kwargs["user_override"] = {"main_ram": 0x40000000}
+    soc_kwargs["sys_clk_freq"] = int(100e6)
+    soc = arty.BaseSoC(
+        **soc_kwargs)
+    if args.cpu_type == 'rocket' and args.use_cache:
+        for bus in soc.cpu.memory_buses:
+            wb = wishbone.Interface(data_width=bus.data_width,
+                    adr_width=bus.address_width-log2_int(bus.data_width//8))
+            conv = ResetInserter()(axi.AXI2Wishbone(bus, wb, base_address=0))
+            soc.submodules += conv
+            soc.bus.add_master(name="attached memory bus {}".format(wb), master=wb)
+
+    if args.ram_init is not None:
+        soc.add_constant("ROM_BOOT_ADDRESS", soc.mem_map["main_ram"])
+    # Build/Run ---------------------------------------------------------------
+
+    print(builder_kwargs)
+    builder = Builder(soc, **builder_kwargs)  # noqa: F405
+    if args.run:
+        builder.build(run=True)
+        prog = soc.platform.create_programmer()
+        prog.load_bitstream(os.path.join(builder.gateware_dir, soc.build_name + ".bit"))
+    else:
+        builder.build(run=False)
 
 
 def main():
@@ -161,9 +209,13 @@ def main():
     args = parser.parse_args()
 
     soc_kwargs = soc_sdram_argdict(args)  # noqa: F405
+    print(soc_kwargs)
     builder_kwargs = builder_argdict(args)  # noqa: F405
 
-    sim_configuration(args, soc_kwargs, builder_kwargs)
+    if not args.arty:
+        sim_configuration(args, soc_kwargs, builder_kwargs, "")
+    else:
+        arty_configuration(args, soc_kwargs, builder_kwargs, "")
 
 
 if __name__ == "__main__":

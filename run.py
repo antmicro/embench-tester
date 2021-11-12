@@ -15,7 +15,7 @@ from Embench import build_all
 from Embench import benchmark_speed
 
 
-def collect_cpu_and_toolchain_data(cpu_report, mode):
+def collect_cpu_and_toolchain_data(cpu_report, mode, test_path):
     working_dir = os.getcwd()
     d = {}
 
@@ -44,7 +44,7 @@ def collect_cpu_and_toolchain_data(cpu_report, mode):
         d[sw] = res.stdout.decode('utf-8').split("Copyright")[0]
         d[sw] = d[sw].replace('\n', ' ')
 
-    os.chdir(f'{cpu_report["CPU"]}')
+    os.chdir(f'{test_path}')
     platform_data = open('platform.json', 'w+')
     platform_data.write(json.dumps(d))
     platform_data.close()
@@ -63,7 +63,7 @@ def extract_json_results_from_file_to_file(path_to_extract, path_to_save,
     result_json.close()
 
 
-def prepare_arguments_for_build_all(soc_kwargs, cpu_par):
+def prepare_arguments_for_build_all_sim(soc_kwargs, cpu_par, test_path):
     args = argparse.Namespace()
     args.arch = "sim"
     args.chip = 'generic'
@@ -96,8 +96,48 @@ def prepare_arguments_for_build_all(soc_kwargs, cpu_par):
     args.ldflags = f'-nostdlib -nodefaultlibs -nolibc -Wl,--verbose {cpu_par["CPUFLAGS"]}\
             -T{cpu_par["BUILDINC_DIRECTORY"]}/../../linker.ld -N'
     args.clean = True
-    args.logdir = f'../{soc_kwargs["cpu_type"]}/logs'
-    args.builddir = f'../{soc_kwargs["cpu_type"]}/benchmarks'
+    args.logdir = f'../{test_path}/logs'
+    args.builddir = f'../{test_path}/benchmarks'
+    args.binary_converter = f'{cpu_par["TRIPLE"]}-objcopy'
+    args.verbose = None
+    return args
+
+
+def prepare_arguments_for_build_all_arty(soc_kwargs, cpu_par, test_path):
+    args = argparse.Namespace()
+    args.arch = "arty"
+    args.chip = 'generic'
+    args.board = 'generic'
+    args.env = None
+    args.ld = None
+    args.cc_define1_pattern = None
+    args.cc_define2_pattern = None
+    args.cc_incdir_pattern = None
+    args.cc_input_pattern = None
+    args.cc_output_pattern = None
+    args.ld_input_pattern = None
+    args.ld_output_pattern = None
+    args.dummy_libs = None
+    args.cpu_mhz = 100
+    args.warmup_heat = None
+    args.timeout = 5
+    args.cc = f"{cpu_par['TRIPLE']}-gcc"
+    args.cflags = f'-v -I{cpu_par["BUILDINC_DIRECTORY"]} \
+-I{cpu_par["BUILDINC_DIRECTORY"]}/../libc \
+-I{cpu_par["CPU_DIRECTORY"]} -I{cpu_par["SOC_DIRECTORY"]}/software/include \
+-std=gnu99 {cpu_par["CPUFLAGS"]} -I{cpu_par["PICOLIBC_DIRECTORY"]}/newlib/libc/tinystdio \
+-I{cpu_par["PICOLIBC_DIRECTORY"]}/newlib/libc/include -O2 -ffunction-sections'
+    args.user_libs = f'{cpu_par["BUILDINC_DIRECTORY"]}/../bios/crt0.o \
+-L{cpu_par["BUILDINC_DIRECTORY"]} -L{cpu_par["BUILDINC_DIRECTORY"]}/../libc \
+-L{cpu_par["BUILDINC_DIRECTORY"]}/../libcompiler_rt \
+-L{cpu_par["BUILDINC_DIRECTORY"]}/../libcomm \
+{cpu_par["BUILDINC_DIRECTORY"]}/../bios/isr.o \
+-lcompiler_rt -lc -lcomm -lgcc'
+    args.ldflags = f'-nostdlib -nodefaultlibs -nolibc -Wl,--verbose {cpu_par["CPUFLAGS"]}\
+            -T{cpu_par["BUILDINC_DIRECTORY"]}/../../linker.ld -N'
+    args.clean = True
+    args.logdir = f'../{test_path}/logs'
+    args.builddir = f'../{test_path}/benchmarks'
     args.binary_converter = f'{cpu_par["TRIPLE"]}-objcopy'
     args.verbose = None
     return args
@@ -117,10 +157,20 @@ def run_arg_parser(parser):
 When running microwatt set to standard+ghdl"
     )
     parser.add_argument(
+        '--output-dir',
+        type=str,
+    )
+    parser.add_argument(
         '--threads',
         type=int,
         help="Specify number of threads for simulation to run on",
         default=1
+    )
+    parser.add_argument(
+        '--arty',
+        type=str,
+        help="Run benchmarks on arty FPGA",
+        default=False
     )
     parser.add_argument(
         '--integrated-sram-size',
@@ -150,6 +200,8 @@ test performance in given mode",
 
 def main():
     # Reading provided arguments
+
+
     parser = argparse.ArgumentParser(
             description='Build benchmarks for given cpu type')
     run_arg_parser(parser)
@@ -171,21 +223,28 @@ def main():
         args.cpu_variant = 'standard'
 
     soc_kwargs = sim.soc_sdram_argdict(args)
+    test_path = f"{soc_kwargs['cpu_type']}_{soc_kwargs['cpu_variant']}" + \
+                f"_{args.bus_data_width}_{args.use_cache}"
+
     builder_kwargs = sim.builder_argdict(args)
-    builder_kwargs["output_dir"] = soc_kwargs["cpu_type"]
+    builder_kwargs["output_dir"] = test_path
     builder_kwargs["compile_gateware"] = False
     soc_kwargs["opt_level"] = "O3"
 
+
     # Create software for simulated SoC
-    sim.sim_configuration(args, soc_kwargs, builder_kwargs)
+    if not args.arty:
+        sim.sim_configuration(args, soc_kwargs, builder_kwargs, test_path)
+    else:
+        sim.arty_configuration(args, soc_kwargs, builder_kwargs, test_path)
 
     # Copy universal linker script
     shutil.copy2('./Embench/config/sim/boards/generic/linker.ld',
-                 f'./{soc_kwargs["cpu_type"]}/linker.ld')
+                 f'./{test_path}/linker.ld')
 
     cpu_report = {}
 
-    variables = f"./{soc_kwargs['cpu_type']}/software\
+    variables = f"./{test_path}/software\
 /include/generated/variables.mak"
     with open(os.path.abspath(variables)) as f:
         for line in f:
@@ -198,26 +257,32 @@ def main():
 
     # Collect imformation about cpu repo and toolchain version
     for i in run_args.benchmark_strategy:
-        collect_cpu_and_toolchain_data(cpu_report, i)
+        collect_cpu_and_toolchain_data(cpu_report, i, test_path)
 
     # Make directories for benchamrks and logs from embench
-    if not os.path.exists(f'{soc_kwargs["cpu_type"]}/benchmarks'):
-        os.mkdir(f'{soc_kwargs["cpu_type"]}/benchmarks')
+    if not os.path.exists(f'{test_path}/benchmarks'):
+        os.mkdir(f'{test_path}/benchmarks')
 
-    if not os.path.exists(f'{soc_kwargs["cpu_type"]}/logs'):
-        os.mkdir(f'{soc_kwargs["cpu_type"]}/logs')
+    if not os.path.exists(f'{test_path}/logs'):
+        os.mkdir(f'{test_path}/logs')
 
     # Prepare namespace for build_all
-    arglist = prepare_arguments_for_build_all(soc_kwargs, cpu_report)
+    if not args.arty:
+        arglist = prepare_arguments_for_build_all_sim(soc_kwargs, cpu_report, test_path)
+    else:
+        arglist = prepare_arguments_for_build_all_arty(soc_kwargs, cpu_report, test_path)
     # Build all benchmarks
     build_all.submodule_main(arglist)
 
     # Prepare argument namespace for benchmark
     arglist = argparse.Namespace()
-    arglist.builddir = f'../{soc_kwargs["cpu_type"]}/benchmarks'
-    arglist.logdir = f'../{soc_kwargs["cpu_type"]}/logs'
+    arglist.builddir = f'../{test_path}/benchmarks'
+    arglist.logdir = f'../{test_path}/logs'
     arglist.output_format = benchmark_speed.output_format.JSON
-    arglist.target_module = 'run_litex_sim'
+    if not args.arty:
+        arglist.target_module = 'run_litex_sim'
+    else:
+        arglist.target_module = 'run_litex_arty'
     arglist.timeout = 7200
     arglist.baselinedir = 'baseline-data'
     arglist.json_comma = False
@@ -226,35 +291,37 @@ def main():
 
     remnant = f'--cpu-type {args.cpu_type}'.split()
     remnant.extend(f'--cpu-variant {args.cpu_variant}'.split())
-    remnant.extend(f'--threads {args.threads}'.split())
+    if not args.arty:
+        remnant.extend(f'--threads {args.threads}'.split())
     remnant.extend(f'--bus-data-width {args.bus_data_width}'.split())
     remnant.extend(f'--use-cache {args.use_cache}'.split())
+    remnant.extend(f'--output-dir {test_path}'.split())
     remnant.extend(f'--integrated-sram-size \
 {args.integrated_sram_size}'.split())
 
-    logs_before = set(glob.glob(f'./{soc_kwargs["cpu_type"]}/logs/speed*'))
+    logs_before = set(glob.glob(f'./{test_path}/logs/speed*'))
 
     # Bench relative speed
     if 'relative' in run_args.benchmark_strategy:
         arglist.absolute = 1
         benchmark_speed.submodule_main(arglist, remnant)
-        relative_result_path = f'./{soc_kwargs["cpu_type"]}/result.json'
+        relative_result_path = f'./{test_path}/result.json'
 
     # Bench absolute speed
     if 'absolute' in run_args.benchmark_strategy:
         arglist.absolute = 0
         benchmark_speed.submodule_main(arglist, remnant)
-        absolute_result_path = f'./{soc_kwargs["cpu_type"]}/result_abs.json'
+        absolute_result_path = f'./{test_path}/result_abs.json'
 
     # Bench both speed
     if 'both' in run_args.benchmark_strategy:
         arglist.absolute = 2
         benchmark_speed.submodule_main(arglist, remnant)
-        relative_result_path = f'./{soc_kwargs["cpu_type"]}/result.json'
-        absolute_result_path = f'./{soc_kwargs["cpu_type"]}/result_abs.json'
+        relative_result_path = f'./{test_path}/result.json'
+        absolute_result_path = f'./{test_path}/result_abs.json'
 
     # Extract results
-    logs_path = f'./{soc_kwargs["cpu_type"]}/logs/speed*'
+    logs_path = f'./{test_path}/logs/speed*'
     logs_new = set(glob.glob(logs_path))-logs_before
 
     logs_new = sorted(list(logs_new))

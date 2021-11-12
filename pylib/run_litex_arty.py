@@ -9,10 +9,12 @@ __all__ = [
 
 import argparse
 import re
+import io
+import subprocess
 
 from embench_core import log
 
-cpu_mhz = 1
+cpu_mhz = 100
 
 
 def get_target_args(remnant):
@@ -34,11 +36,6 @@ def get_target_args(remnant):
     parser.add_argument(
         '--output-dir',
         type=str,
-    )
-    parser.add_argument(
-        '--threads',
-        type=int,
-        default=1
     )
     parser.add_argument(
         '--integrated-sram-size',
@@ -71,8 +68,8 @@ def build_benchmark_cmd(bench, args):
     cmd.extend(f'--output-dir ./{args.output_dir}'.split())
     cmd.extend(f'--bus-data-width {args.bus_data_width}'.split())
     cmd.extend(f'--use-cache {args.use_cache}'.split())
-    cmd.extend(f'--threads {args.threads} --opt-level O3 \
---integrated-sram-size {args.integrated_sram_size}'.split())
+    cmd.extend(f'--arty=True'.split())
+    cmd.extend(f'--integrated-sram-size {args.integrated_sram_size}'.split())
     return cmd
 
 
@@ -80,10 +77,21 @@ def decode_results(stdout_str, stderr_str):
     """Extract the results from the output string of the run. Return the
         elapsed time in milliseconds or zero if the run failed."""
 
-    time_re = re.search('Bench time:(\\d+)', stdout_str, re.S)
-    time = int(time_re.group(1))
-    if not time:
-        log.debug('Warning: Failed to find timing')
-        return 0.0
+    proc = subprocess.Popen(["./terminal.py", "--speed", "115200", "/dev/ttyUSB1"], stdout=subprocess.PIPE)
 
-    return time / cpu_mhz / 1000.0
+    line = b""
+    while True:
+        c =  proc.stdout.read(1)
+        if c != b'\n':
+            line += c
+        else:
+            print(line.decode("utf-8", errors="ignore"))
+            line = line.decode("utf-8", errors="ignore")
+            time_re = re.search('Bench time:(\\d+)', line, re.S)
+            if time_re:
+                time = int(time_re.group(1))
+                proc.kill()
+                return time / cpu_mhz / 1000.0
+            line = b''
+
+    raise

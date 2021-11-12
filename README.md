@@ -14,7 +14,9 @@ Absolute results show the time that was needed to finish the test, while relativ
 
 This project consists of the following files:
 * `pylib/run_litex_sim.py` - contains an Embench module enabling LiteX simulation target
+* `pylib/run_litex_arty.py` - contains an Embench module enabling LiteX ArtyA7 target
 * `config/sim` - Embench configuration adding LiteX simulation target
+* `config/arty` - Embench configuration adding LiteX ArtyA7 target
 * `sim.py` - contains minimalistic LiteX SoC configuration used in simulation
 * `run.py` - script for running benchmarks on a single CPU
 * `table_maker.py` - script used to aggregate multiple json results from multiple cores and create .csv and .rst tables summarising all performed tests
@@ -29,8 +31,9 @@ make env
 source env/conda/bin/activate embench-tester
 ./install.sh
 ```
-Install script will install modified version of litex as well as
-it'll install ghdl and ghdl-yosys-plugin from source.
+Install script will install modified version of litex in conda env,
+also GHDL and GHDL-yosys-plugin will be installed in conda env.
+This should not modify existing installations.
 
 
 It will install required repositories to curent directory.
@@ -38,6 +41,11 @@ It will install required repositories to curent directory.
 ## Usage
 
 To test CPU core run:
+First source conda env with:
+```
+source env/conda/bin/activate embench-tester
+```
+Then run:
 ```
 ./run.py --cpu-type <cpu_name>
 ```
