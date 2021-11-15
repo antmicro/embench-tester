@@ -85,7 +85,7 @@ def decode_results(stdout_str, stderr_str):
         if c != b'\n':
             line += c
         else:
-            print(line.decode("utf-8", errors="ignore"))
+            log.debug(line.decode("utf-8", errors="ignore").encode("ascii", errors="ignore"))
             line = line.decode("utf-8", errors="ignore")
             time_re = re.search('Bench time:(\\d+)', line, re.S)
             if time_re:

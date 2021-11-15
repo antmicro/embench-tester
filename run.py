@@ -63,9 +63,9 @@ def extract_json_results_from_file_to_file(path_to_extract, path_to_save,
     result_json.close()
 
 
-def prepare_arguments_for_build_all_sim(soc_kwargs, cpu_par, test_path):
+def prepare_arguments_for_build_all(soc_kwargs, cpu_par, test_path, cpu_mhz=None, arch="sim"):
     args = argparse.Namespace()
-    args.arch = "sim"
+    args.arch = arch
     args.chip = 'generic'
     args.board = 'generic'
     args.env = None
@@ -78,53 +78,14 @@ def prepare_arguments_for_build_all_sim(soc_kwargs, cpu_par, test_path):
     args.ld_input_pattern = None
     args.ld_output_pattern = None
     args.dummy_libs = None
-    args.cpu_mhz = None
+    args.cpu_mhz = cpu_mhz
     args.warmup_heat = None
     args.timeout = 5
     args.cc = f"{cpu_par['TRIPLE']}-gcc"
     args.cflags = f'-v -I{cpu_par["BUILDINC_DIRECTORY"]} \
 -I{cpu_par["BUILDINC_DIRECTORY"]}/../libc \
 -I{cpu_par["CPU_DIRECTORY"]} -I{cpu_par["SOC_DIRECTORY"]}/software/include \
--std=gnu99 {cpu_par["CPUFLAGS"]} -I{cpu_par["PICOLIBC_DIRECTORY"]}/newlib/libc/tinystdio \
--I{cpu_par["PICOLIBC_DIRECTORY"]}/newlib/libc/include -O2 -ffunction-sections'
-    args.user_libs = f'{cpu_par["BUILDINC_DIRECTORY"]}/../bios/crt0.o \
--L{cpu_par["BUILDINC_DIRECTORY"]} -L{cpu_par["BUILDINC_DIRECTORY"]}/../libc \
--L{cpu_par["BUILDINC_DIRECTORY"]}/../libcompiler_rt \
--L{cpu_par["BUILDINC_DIRECTORY"]}/../libcomm \
-{cpu_par["BUILDINC_DIRECTORY"]}/../bios/isr.o \
--lcompiler_rt -lc -lcomm -lgcc'
-    args.ldflags = f'-nostdlib -nodefaultlibs -nolibc -Wl,--verbose {cpu_par["CPUFLAGS"]}\
-            -T{cpu_par["BUILDINC_DIRECTORY"]}/../../linker.ld -N'
-    args.clean = True
-    args.logdir = f'../{test_path}/logs'
-    args.builddir = f'../{test_path}/benchmarks'
-    args.binary_converter = f'{cpu_par["TRIPLE"]}-objcopy'
-    args.verbose = None
-    return args
-
-
-def prepare_arguments_for_build_all_arty(soc_kwargs, cpu_par, test_path):
-    args = argparse.Namespace()
-    args.arch = "arty"
-    args.chip = 'generic'
-    args.board = 'generic'
-    args.env = None
-    args.ld = None
-    args.cc_define1_pattern = None
-    args.cc_define2_pattern = None
-    args.cc_incdir_pattern = None
-    args.cc_input_pattern = None
-    args.cc_output_pattern = None
-    args.ld_input_pattern = None
-    args.ld_output_pattern = None
-    args.dummy_libs = None
-    args.cpu_mhz = 100
-    args.warmup_heat = None
-    args.timeout = 5
-    args.cc = f"{cpu_par['TRIPLE']}-gcc"
-    args.cflags = f'-v -I{cpu_par["BUILDINC_DIRECTORY"]} \
--I{cpu_par["BUILDINC_DIRECTORY"]}/../libc \
--I{cpu_par["CPU_DIRECTORY"]} -I{cpu_par["SOC_DIRECTORY"]}/software/include \
+-I{cpu_par["SOC_DIRECTORY"]}/software/libcomm \
 -std=gnu99 {cpu_par["CPUFLAGS"]} -I{cpu_par["PICOLIBC_DIRECTORY"]}/newlib/libc/tinystdio \
 -I{cpu_par["PICOLIBC_DIRECTORY"]}/newlib/libc/include -O2 -ffunction-sections'
     args.user_libs = f'{cpu_par["BUILDINC_DIRECTORY"]}/../bios/crt0.o \
@@ -267,10 +228,9 @@ def main():
         os.mkdir(f'{test_path}/logs')
 
     # Prepare namespace for build_all
-    if not args.arty:
-        arglist = prepare_arguments_for_build_all_sim(soc_kwargs, cpu_report, test_path)
-    else:
-        arglist = prepare_arguments_for_build_all_arty(soc_kwargs, cpu_report, test_path)
+    arch = "arty" if args.arty else "sim"
+    cpu_mhz = 100 if args.arty else None
+    arglist = prepare_arguments_for_build_all(soc_kwargs, cpu_report, test_path, cpu_mhz, arch)
     # Build all benchmarks
     build_all.submodule_main(arglist)
 
