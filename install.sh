@@ -18,7 +18,7 @@ cp -r ./pylib/* ./Embench/pylib/
 cp -r third_party/litex litex/
 cp litex/litex_setup.py .
 chmod +x litex_setup.py
-./litex_setup.py init install --user dev
+./litex_setup.py --init --install --user --dev --config full
 
 cd third_party
 

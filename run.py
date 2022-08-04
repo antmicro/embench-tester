@@ -19,15 +19,13 @@ def collect_cpu_and_toolchain_data(cpu_report, mode, test_path):
     working_dir = os.getcwd()
     d = {}
 
-    if (cpu_report["CPU"] == "ibex"):
-        os.chdir(f'pythondata-misc-opentitan')
-    else:
+    if os.path.exists(f'pythondata-cpu-{cpu_report["CPU"]}'):
         os.chdir(f'pythondata-cpu-{cpu_report["CPU"]}')
-    repo = Repo(os.getcwd())
-    d['CPU'] = {
-        cpu_report['CPU']: repo.head.commit.hexsha
-    }
-    os.chdir(working_dir)
+        repo = Repo(os.getcwd())
+        d['CPU'] = {
+            cpu_report['CPU']: repo.head.commit.hexsha
+        }
+        os.chdir(working_dir)
 
     software_used = {
         'toolchain': f'{cpu_report["TRIPLE"]}-gcc',
@@ -85,15 +83,17 @@ def prepare_arguments_for_build_all(soc_kwargs, cpu_par, test_path, cpu_mhz=None
     args.cflags = f'-v -I{cpu_par["BUILDINC_DIRECTORY"]} \
 -I{cpu_par["BUILDINC_DIRECTORY"]}/../libc \
 -I{cpu_par["CPU_DIRECTORY"]} -I{cpu_par["SOC_DIRECTORY"]}/software/include \
--I{cpu_par["SOC_DIRECTORY"]}/software/libcomm \
+-I{cpu_par["SOC_DIRECTORY"]}/software/libbase \
 -std=gnu99 {cpu_par["CPUFLAGS"]} -I{cpu_par["PICOLIBC_DIRECTORY"]}/newlib/libc/tinystdio \
 -I{cpu_par["PICOLIBC_DIRECTORY"]}/newlib/libc/include -O2 -ffunction-sections'
-    args.user_libs = f'{cpu_par["BUILDINC_DIRECTORY"]}/../bios/crt0.o \
+    args.user_libs = ""
+    if soc_kwargs['cpu_type'] == 'blackparrot':
+        args.user_libs += f'{cpu_par["BUILDINC_DIRECTORY"]}/../bios/mul.o '
+    args.user_libs += f'{cpu_par["BUILDINC_DIRECTORY"]}/../bios/crt0.o \
 -L{cpu_par["BUILDINC_DIRECTORY"]} -L{cpu_par["BUILDINC_DIRECTORY"]}/../libc \
 -L{cpu_par["BUILDINC_DIRECTORY"]}/../libcompiler_rt \
--L{cpu_par["BUILDINC_DIRECTORY"]}/../libcomm \
-{cpu_par["BUILDINC_DIRECTORY"]}/../bios/isr.o \
--lcompiler_rt -lc -lcomm -lgcc'
+-L{cpu_par["BUILDINC_DIRECTORY"]}/../libbase \
+-lc -lcompiler_rt -lbase -lgcc'
     args.ldflags = f'-nostdlib -nodefaultlibs -nolibc -Wl,--verbose {cpu_par["CPUFLAGS"]}\
             -T{cpu_par["BUILDINC_DIRECTORY"]}/../../linker.ld -N'
     args.clean = True
@@ -114,8 +114,10 @@ def run_arg_parser(parser):
     parser.add_argument(
         '--cpu-variant',
         type=str,
+        default="standard",
         help="CPU variant to run benchmarks on\n\
-When running microwatt set to standard+ghdl"
+When running microwatt set to standard+ghdl\n\
+When running blackparrot set to sim",
     )
     parser.add_argument(
         '--output-dir',
@@ -136,13 +138,12 @@ When running microwatt set to standard+ghdl"
     parser.add_argument(
         '--integrated-sram-size',
         help="Specify how big is sram/program stack\n\
-When running microwatt set to at least 0x8000",
-        default=0x8000
+When running microwatt, blackparrot, rocket, openc906, cva6 set to at least 0x8000",
+        default=0x2000
     )
     parser.add_argument(
         '--bus-data-width',
-        help="Set SoC internal bus data width\n\
-Only Rocket and Microwatt should use 64 bit busses",
+        help="Set SoC internal bus data width",
         default=32
     )
     parser.add_argument(
@@ -172,18 +173,15 @@ def main():
 
     sim.sim_args(internal_parser)
     sim.builder_args(internal_parser)
-    sim.soc_sdram_args(internal_parser)
+    sim.soc_core_args(internal_parser)
     args, rest = internal_parser.parse_known_args()
-    args.integrated_sram_size = run_args.integrated_sram_size
+    args.cpu_variant = run_args.cpu_variant
+    args.integrated_sram_size = int(run_args.integrated_sram_size)
+    
+    if args.cpu_type == 'openc906':
+        os.environ["OPENC906_DIR"] = os.path.join(os.getcwd(), 'third_party','openc906')
 
-    if (args.cpu_type == 'microwatt'):
-        args.cpu_variant = 'standard+ghdl'
-    elif (args.cpu_type == 'blackparrot'):
-        args.cpu_variant = 'sim'
-    else:
-        args.cpu_variant = 'standard'
-
-    soc_kwargs = sim.soc_sdram_argdict(args)
+    soc_kwargs = sim.soc_core_argdict(args)
     test_path = f"{soc_kwargs['cpu_type']}_{soc_kwargs['cpu_variant']}" + \
                 f"_{args.bus_data_width}_{args.use_cache}"
 

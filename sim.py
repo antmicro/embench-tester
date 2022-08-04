@@ -11,7 +11,6 @@ from litex.build.sim.config import SimConfig
 
 from litex.soc.integration.common import *  # noqa: F403
 from litex.soc.integration.soc_core import *  # noqa: F403
-from litex.soc.integration.soc_sdram import *  # noqa: F403
 from litex.soc.integration.builder import *  # noqa: F403
 from litex.soc.integration.soc import *  # noqa: F403
 from litex.soc.interconnect.csr import *  # noqa: F403
@@ -51,8 +50,7 @@ class SimSoC(SoCCore):  # noqa: F405
 
         # SoCCore -------------------------------------------------------------
         SoCCore.__init__(self, platform, clk_freq=sys_clk_freq,  # noqa: F405
-                         ident="LiteX Simulation",
-                         ident_version=True, **kwargs)
+                         ident="LiteX Simulation", **kwargs)
 
         # Supervisor ----------------------------------------------------------
         self.submodules.supervisor = Supervisor()
@@ -188,7 +186,6 @@ def arty_configuration(args, soc_kwargs, builder_kwargs, test_path):
         soc.add_constant("ROM_BOOT_ADDRESS", soc.mem_map["main_ram"])
     # Build/Run ---------------------------------------------------------------
 
-    print(builder_kwargs)
     builder = Builder(soc, **builder_kwargs)  # noqa: F405
     if args.run:
         builder.build(run=True)
@@ -204,12 +201,11 @@ def main():
     parser = argparse.ArgumentParser(
         description="Generic LiteX SoC Simulation")
     builder_args(parser)  # noqa: F405
-    soc_sdram_args(parser)  # noqa: F405
+    soc_core_args(parser)  # noqa: F405
     sim_args(parser)  # noqa: F405
     args = parser.parse_args()
 
-    soc_kwargs = soc_sdram_argdict(args)  # noqa: F405
-    print(soc_kwargs)
+    soc_kwargs = soc_core_argdict(args)  # noqa: F405
     builder_kwargs = builder_argdict(args)  # noqa: F405
 
     if not args.arty:
