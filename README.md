@@ -47,7 +47,7 @@ source env/conda/bin/activate embench-tester
 ```
 Then run:
 ```
-./run.py --cpu-type <cpu_name>
+./run.py --cpu-type <cpu_name> --benchmark-strategy [absolute | relative | both]
 ```
 
 Currently available targets are:
@@ -62,6 +62,17 @@ Currently available targets are:
 * lm32
 * Ibex
 * Rocket
+* blackparrot
+* cv32e41p
+* cva5
+* cva6
+* femtorv
+* firev
+* marocchino
+* naxricsv
+* neorv32
+* openc906
+* vexriscv_smp
 
 The results are provided as a set of json files stored in a directory named after the tested CPU.
 To create the summarizing tables, run the ``./table_maker.py`` script.
