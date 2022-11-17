@@ -2,9 +2,6 @@
 # build essensials
 set -e
 
-sudo apt update
-sudo apt install -y gnat
-
 BASE_DIR=$PWD
 
 # Get Embench
