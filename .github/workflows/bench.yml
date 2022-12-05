@@ -1,4 +1,4 @@
-name: Benchmarking
+name: CPU Benchmarking
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        core-type:
+        cpu-type:
           - cv32e40p
           - cv32e41p
           - cva5
@@ -28,216 +28,75 @@ jobs:
           - picorv32
           - vexriscv
           - vexriscv_smp
-
     steps:
-
-      - uses: actions/checkout@v2
+      - {uses: actions/checkout@v2, with: { submodules: true }}
+      - uses: ./.github/benching
         with:
-          submodules: true
+          cpu-type: ${{ matrix.cpu-type }}
 
-      - name: Instalation and simulation ${{ matrix.core-type }}
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install gnat python3 python3-setuptools python3-pip zlib1g-dev tcl8.6-dev git make
-          sudo apt-get -y install clang libreadline-dev gawk libffi-dev graphviz xdot libboost-system-dev libboost-python-dev libboost-filesystem-dev
-          sudo apt-get -y install libevent-dev libjson-c-dev ca-certificates openjdk-17-jre-headless
-          pip3 install gitpython
-          sudo ./sbtinstall.sh
-          git config --global url.https://github.com/.insteadof "git@github.com:"
-          make env
-          source env/conda/bin/activate embench-tester
-          ./install.sh
-          ./run.py --cpu-type ${{ matrix.core-type }} --threads 2 --benchmark-strategy both
-
-      - uses: actions/upload-artifact@v2
-        if: ${{ always() }}
-        with:
-          name: ${{github.job}}
-          path: |
-            ./*/*.json
-            ./**/*.log
-    
-  benching_blackparrot:
+  benching_blackparrot: 
     runs-on: ubuntu-20.04
     steps:
-
-      - uses: actions/checkout@v2
+      - { uses: actions/checkout@v2, with: { submodules: true } }
+      - uses: ./.github/benching
         with:
-          submodules: true
+          cpu-type: "blackparrot"
+          cpu-variant: "sim"
+          integrated-sram-size: 32768 
 
-      - name: Instalation and simulation blackparrot
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install gnat python3 python3-setuptools python3-pip zlib1g-dev tcl8.6-dev git make
-          sudo apt-get -y install clang libreadline-dev gawk libffi-dev graphviz xdot libboost-system-dev libboost-python-dev libboost-filesystem-dev
-          sudo apt-get -y install libevent-dev libjson-c-dev ca-certificates
-          pip3 install gitpython
-          git config --global url.https://github.com/.insteadof "git@github.com:"
-          make env
-          source env/conda/bin/activate embench-tester
-          ./install.sh
-          ./run.py --cpu-type "blackparrot" --cpu-variant "sim" --integrated-sram-size=32768 --threads 2 --benchmark-strategy both
-
-      - uses: actions/upload-artifact@v2
-        if: ${{ always() }}
-        with:
-          name: ${{github.job}}
-          path: |
-            ./*/*.json
-            ./**/*.log
-  
   # benching_cva6:
   #   runs-on: ubuntu-20.04
   #   steps:
-
-  #     - uses: actions/checkout@v2
+  #     - { uses: actions/checkout@v2, with: { submodules: true } }
+  #     - uses: ./.github/benching
   #       with:
-  #         submodules: true
-
-  #     - name: Instalation and simulation cva6
-  #       run: |
-  #         sudo apt-get update
-  #         sudo apt-get -y install gnat python3 python3-setuptools python3-pip zlib1g-dev tcl8.6-dev git make
-  #         sudo apt-get -y install clang libreadline-dev gawk libffi-dev graphviz xdot libboost-system-dev libboost-python-dev libboost-filesystem-dev
-  #         sudo apt-get -y install libevent-dev libjson-c-dev ca-certificates
-  #         pip3 install gitpython
-  #         git config --global url.https://github.com/.insteadof "git@github.com:"
-  #         make env
-  #         source env/conda/bin/activate embench-tester
-  #         ./install.sh
-  #         ./run.py --cpu-type "cva6" --integrated-sram-size=32768 --threads 2 --benchmark-strategy both
-
-  #     - uses: actions/upload-artifact@v2
-  #       if: ${{ always() }}
-  #       with:
-  #         name: ${{github.job}}
-  #         path: |
-  #           ./*/*.json
-  #           ./**/*.log
-
+  #         cpu-type: "cva6"
+  #         integrated-sram-size: 32768
+    
   benching_microwatt:
     runs-on: ubuntu-20.04
     steps:
-
-      - uses: actions/checkout@v2
+      - { uses: actions/checkout@v2, with: { submodules: true } }
+      - uses: ./.github/benching
         with:
-          submodules: true
-
-      - name: Instalation and simulation microwatt
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install gnat python3 python3-setuptools python3-pip zlib1g-dev tcl8.6-dev git make
-          sudo apt-get -y install clang libreadline-dev gawk libffi-dev graphviz xdot libboost-system-dev libboost-python-dev libboost-filesystem-dev
-          sudo apt-get -y install libevent-dev libjson-c-dev ca-certificates
-          pip3 install gitpython
-          git config --global url.https://github.com/.insteadof "git@github.com:"
-          make env
-          source env/conda/bin/activate embench-tester
-          ./install.sh
-          ./run.py --cpu-type "microwatt" --cpu-variant "standard+ghdl" --integrated-sram-size=32768 --threads 2 --benchmark-strategy both
-
-      - uses: actions/upload-artifact@v2
-        if: ${{ always() }}
-        with:
-          name: ${{github.job}}
-          path: |
-            ./*/*.json
-            ./**/*.log
+          cpu-type: "microwatt"
+          cpu-variant: "standard+ghdl"
+          integrated-sram-size: 32768
 
   # benching_openc906:
   #   runs-on: ubuntu-20.04
   #   steps:
-
-  #     - uses: actions/checkout@v2
+  #     - { uses: actions/checkout@v2, with: { submodules: true } }
+  #     - uses: ./.github/benching
   #       with:
-  #         submodules: true
+  #         cpu-type: "openc906"
+  #         integrated-sram-size: 32768
 
-  #     - name: Instalation and simulation openc906
-  #       run: |
-  #         sudo apt-get update
-  #         sudo apt-get -y install gnat python3 python3-setuptools python3-pip zlib1g-dev tcl8.6-dev git make
-  #         sudo apt-get -y install clang libreadline-dev gawk libffi-dev graphviz xdot libboost-system-dev libboost-python-dev libboost-filesystem-dev
-  #         sudo apt-get -y install libevent-dev libjson-c-dev ca-certificates
-  #         pip3 install gitpython
-  #         git config --global url.https://github.com/.insteadof "git@github.com:"
-  #         make env
-  #         source env/conda/bin/activate embench-tester
-  #         ./install.sh
-  #         ./run.py --cpu-type "openc906" --integrated-sram-size=32768 --threads 2 --benchmark-strategy both
-
-  #     - uses: actions/upload-artifact@v2
-  #       if: ${{ always() }}
-  #       with:
-  #         name: ${{github.job}}
-  #         path: |
-  #           ./*/*.json
-  #           ./**/*.log
-
-  # benching_rocket:
+  # rocket:
   #   runs-on: ubuntu-20.04
   #   steps:
-
-  #     - uses: actions/checkout@v2
+  #     - { uses: actions/checkout@v2, with: { submodules: true } }
+  #     - uses: ./.github/benching
   #       with:
-  #         submodules: true
-
-  #     - name: Instalation and simulation rocket
-  #       run: |
-  #         sudo apt-get update
-  #         sudo apt-get -y install gnat python3 python3-setuptools python3-pip zlib1g-dev tcl8.6-dev git make
-  #         sudo apt-get -y install clang libreadline-dev gawk libffi-dev graphviz xdot libboost-system-dev libboost-python-dev libboost-filesystem-dev
-  #         sudo apt-get -y install libevent-dev libjson-c-dev ca-certificates
-  #         pip3 install gitpython
-  #         git config --global url.https://github.com/.insteadof "git@github.com:"
-  #         make env
-  #         source env/conda/bin/activate embench-tester
-  #         ./install.sh
-  #         ./run.py --cpu-type "rocket" --integrated-sram-size=32768 --use-cache 1 --threads 2 --benchmark-strategy both
-
-  #     - uses: actions/upload-artifact@v2
-  #       if: ${{ always() }}
-  #       with:
-  #         name: ${{github.job}}
-  #         path: |
-  #           ./*/*.json
-  #           ./**/*.log
+  #         cpu-type: "rocket"
+  #         integrated-sram-size: 32768
+  #         use-cache: true
 
   benching_serv:
     runs-on: ubuntu-20.04
     steps:
-
-      - uses: actions/checkout@v2
+      - { uses: actions/checkout@v2, with: { submodules: true } }
+      - uses: ./.github/benching
         with:
-          submodules: true
+          cpu-type: "serv"
+          threads: 1
 
-      - name: Instalation and simulation serv
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install gnat python3 python3-setuptools python3-pip zlib1g-dev tcl8.6-dev git make
-          sudo apt-get -y install clang libreadline-dev gawk libffi-dev graphviz xdot libboost-system-dev libboost-python-dev libboost-filesystem-dev
-          sudo apt-get -y install libevent-dev libjson-c-dev ca-certificates
-          pip3 install gitpython
-          git config --global url.https://github.com/.insteadof "git@github.com:"
-          make env
-          source env/conda/bin/activate embench-tester
-          ./install.sh
-          ./run.py --cpu-type "serv" --threads 1 --benchmark-strategy both
-
-      - uses: actions/upload-artifact@v2
-        if: ${{ always() }}
-        with:
-          name: ${{github.job}}
-          path: |
-            ./*/*.json
-            ./**/*.log
-  
   table_maker:
     runs-on: ubuntu-20.04
     needs: [benching, benching_blackparrot, benching_microwatt, benching_serv]
+      
     steps:
-
       - uses: actions/checkout@v2
-
       - uses: actions/download-artifact@v2
 
       - name: Result aggregation
