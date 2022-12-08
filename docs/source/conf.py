@@ -22,7 +22,7 @@ theme_path = get_html_theme_path() + "/sphinx_antmicro_theme"
 # -- Project information -----------------------------------------------------
 
 project = 'Embench-LiteX tester'
-copyright = '2020, Antmicro'
+copyright = '2020-2022, Antmicro'
 author = 'Antmicro'
 
 # The short X.Y version

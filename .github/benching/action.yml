@@ -1,0 +1,51 @@
+name: "CPU benchmark"
+
+inputs:
+  cpu-type:
+    description: "Name of the CPU to test"
+    required: true
+  cpu-variant:
+    description: "Variant of the CPU to test (default - standard)"
+    default: "standard"
+    required: false
+  benchmark-strategy:
+    description: "Testing mode, one of: absolute, relative, both (default)"
+    default: "both"
+    required: false
+  threads:
+    description: "Number of threads for simulation to run on"
+    default: 2
+    required: false
+  integrared-sram-size:
+    description: "How big is sram/program stack"
+    default: 8192
+    required: false
+  use-cache:
+    description: "Use caches in rocket chip"
+    default: false
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    - shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install gnat python3 python3-setuptools python3-pip zlib1g-dev tcl8.6-dev git make
+        sudo apt-get -y install clang libreadline-dev gawk libffi-dev graphviz xdot libboost-system-dev libboost-python-dev libboost-filesystem-dev
+        sudo apt-get -y install libevent-dev libjson-c-dev ca-certificates
+        pip3 install gitpython
+        sudo ./sbtinstall.sh
+        git config --global url.https://github.com/.insteadof "git@github.com:"
+        make env
+        source env/conda/bin/activate embench-tester
+        ./install.sh
+        ./run.py --cpu-type ${{ inputs.cpu-type }} --cpu-variant ${{ inputs.cpu-variant }} --integrated-sram-size ${{ inputs.integrated-sram-size }} --threads ${{ inputs.threads }} --benchmark-strategy ${{ inputs.benchmark-strategy }} --use-cache ${{ inputs.use-cache }}
+
+    - uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: ${{github.job}}
+          path: |
+            ./*/*.json
+            ./**/*.log

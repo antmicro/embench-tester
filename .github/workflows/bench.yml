@@ -1,162 +1,130 @@
-# This is a basic workflow to help you get started with Actions
+name: CPU Benchmarking
 
-name: Benchmarking
-
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-
-
   benching:
     runs-on: ubuntu-20.04
     strategy:
+      fail-fast: false
       matrix:
-        core-type:
-          - ibex
-          - vexriscv
-#          - serv
-          - picorv32
-          - minerva
-#          - rocket
-#          - blackparrot
+        cpu-type:
           - cv32e40p
-          - microwatt
+          - cv32e41p
+          - cva5
+          - femtorv
+          - firev
+          - ibex
           - lm32
+          - marocchino
+          - minerva
           - mor1kx
+          - naxriscv
+          - neorv32
+          - picorv32
+          - vexriscv
+          - vexriscv_smp
     steps:
-
-      - uses: actions/checkout@v2
+      - {uses: actions/checkout@v2, with: { submodules: true }}
+      - uses: ./.github/benching
         with:
-          submodules: true
+          cpu-type: ${{ matrix.cpu-type }}
 
-      - name: Instalation and simulation ${{ matrix.core-type }}
-        run: |
-          make env
-          source env/conda/bin/activate embench-tester
-          ./install.sh
-          ./run.py --cpu-type ${{ matrix.core-type }} --threads 2 --benchmark-strategy both
-
-      - uses: actions/upload-artifact@v2
-        if: ${{ always() }}
-        with:
-          name: ${{github.job}}
-          path: |
-            ./*/*.json
-            ./**/*.log
-
-  benching64:
+  benching_blackparrot: 
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        core-type:
-#          - rocket
-          - microwatt
     steps:
-
-      - uses: actions/checkout@v2
+      - { uses: actions/checkout@v2, with: { submodules: true } }
+      - uses: ./.github/benching
         with:
-          submodules: true
+          cpu-type: "blackparrot"
+          cpu-variant: "sim"
+          integrated-sram-size: 32768 
 
-      - name: Instalation and simulation ${{ matrix.core-type }}
-        run: |
-          make env
-          source env/conda/bin/activate embench-tester
-          ./install.sh
-          ./run.py --cpu-type ${{ matrix.core-type }} --threads 2 --benchmark-strategy both --bus-data-width 64
-
-      - uses: actions/upload-artifact@v2
-        if: ${{ always() }}
+  # benching_cva6:
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - { uses: actions/checkout@v2, with: { submodules: true } }
+  #     - uses: ./.github/benching
+  #       with:
+  #         cpu-type: "cva6"
+  #         integrated-sram-size: 32768
+    
+  benching_microwatt:
+    runs-on: ubuntu-20.04
+    steps:
+      - { uses: actions/checkout@v2, with: { submodules: true } }
+      - uses: ./.github/benching
         with:
-          name: ${{github.job}}
-          path: |
-            ./*/*.json
-            ./**/*.log
+          cpu-type: "microwatt"
+          cpu-variant: "standard+ghdl"
+          integrated-sram-size: 32768
 
-#  benching64_cache:
-#    runs-on: ubuntu-20.04
-#    strategy:
-#      matrix:
-#        core-type:
-#          - rocket
-#    steps:
-#
-#      - uses: actions/checkout@v2
-#        with:
-#          submodules: true
-#
-#      - name: Instalation and simulation ${{ matrix.core-type }}
-#        run: |
-#          make env
-#          source env/conda/bin/activate embench-tester
-#          ./install.sh
-#          ./run.py --cpu-type ${{ matrix.core-type }} --threads 2 --benchmark-strategy both --bus-data-width 64 --use-cache True
-#
-#      - uses: actions/upload-artifact@v2
-#        if: ${{ always() }}
-#        with:
-#          name: ${{github.job}}
-#          path: |
-#            ./*/*.json
-#            ./**/*.log
+  # benching_openc906:
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - { uses: actions/checkout@v2, with: { submodules: true } }
+  #     - uses: ./.github/benching
+  #       with:
+  #         cpu-type: "openc906"
+  #         integrated-sram-size: 32768
 
-#  benching_cache:
-#    runs-on: ubuntu-20.04
-#    strategy:
-#      matrix:
-#        core-type:
-#          - rocket
-#    steps:
-#
-#      - uses: actions/checkout@v2
-#        with:
-#          submodules: true
-#
-#      - name: Instalation and simulation ${{ matrix.core-type }}
-#        run: |
-#          make env
-#          source env/conda/bin/activate embench-tester
-#          ./install.sh
-#          ./run.py --cpu-type ${{ matrix.core-type }} --threads 2 --benchmark-strategy both --use-cache True
+  # rocket:
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #     - { uses: actions/checkout@v2, with: { submodules: true } }
+  #     - uses: ./.github/benching
+  #       with:
+  #         cpu-type: "rocket"
+  #         integrated-sram-size: 32768
+  #         use-cache: true
 
-#      - uses: actions/upload-artifact@v2
-#        if: ${{ always() }}
-#        with:
-#          name: ${{github.job}}
-#          path: |
-#            ./*/*.json
-#            ./**/*.log
+  benching_serv:
+    runs-on: ubuntu-20.04
+    steps:
+      - { uses: actions/checkout@v2, with: { submodules: true } }
+      - uses: ./.github/benching
+        with:
+          cpu-type: "serv"
+          threads: 1
 
-
-  # Result aggregation
   table_maker:
     runs-on: ubuntu-20.04
-    needs: [benching, benching64]
+    needs: [benching, benching_blackparrot, benching_microwatt, benching_serv]
+      
     steps:
-
       - uses: actions/checkout@v2
-
       - uses: actions/download-artifact@v2
 
       - name: Result aggregation
         run: |
           sudo apt-get update
-          sudo apt-get -y install python3 python3-setuptools python3-pip git
-          sudo pip3 install tabulate sphinx
-          sudo pip3 install -Iv jinja2==2.10
+          sudo apt-get -y install python3 python3-setuptools python3-pip git grep make
+          sudo pip3 install tabulate sphinx jinja2
           sudo pip3 install git+https://github.com/antmicro/sphinx_antmicro_theme.git
           ./table_maker.py --dirs \
-          benching/cv32e40p_standard_32_False benching/ibex_standard_32_False \
-          benching/ibex_standard_32_False benching/lm32_standard_32_False benching/microwatt_standard\+ghdl_32_False \
-          benching/minerva_standard_32_False benching/mor1kx_standard_32_False benching/picorv32_standard_32_False \
-          benching/vexriscv_standard_32_False benchin64/microwatt_standard\+ghdl_64_False \
-          --out_dir docs/source --templates_dir docs/source/templates
+          benching/cv32e40p_standard_32_False \
+          benching/cv32e41p_standard_32_False \
+          benching/cva5_standard_32_False \
+          benching/femtorv_standard_32_False \
+          benching/firev_standard_32_False \
+          benching/ibex_standard_32_False \
+          benching/lm32_standard_32_False \
+          benching/marocchino_standard_32_False \
+          benching/minerva_standard_32_False \
+          benching/mor1kx_standard_32_False \
+          benching/naxriscv_standard_32_False \
+          benching/neorv32_standard_32_False \
+          benching/picorv32_standard_32_False \
+          benching/vexriscv_standard_32_False \
+          benching/vexriscv_smp_standard_32_False \
+          benching_blackparrot/blackparrot_sim_32_False \
+          benching_microwatt/microwatt_standard\+ghdl_32_False \
+          benching_serv/serv_standard_32_False \
+          --out-dir docs/source --templates-dir docs/source/templates
           cd docs
           make html
 
@@ -172,7 +140,7 @@ jobs:
               docs/build/*
 
       - name: Deploy to gh-pages
-        if: github.event_name == 'push'
+        if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
         run: |
           cd docs/build/html
           touch .nojekyll

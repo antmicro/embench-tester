@@ -83,8 +83,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dirs', nargs='+',
                         help='List of folders to search in')
-    parser.add_argument('--out_dir', help="Path to output folder")
-    parser.add_argument('--templates_dir',
+    parser.add_argument('--out-dir', help="Path to output folder")
+    parser.add_argument('--templates-dir',
                         help='Path to folder with templates')
     parser.add_argument('--exclude', nargs='*', help='File extensions\
 to be excluded from template folder', default=[])
