@@ -16,7 +16,7 @@ inputs:
     description: "Number of threads for simulation to run on"
     default: 2
     required: false
-  integrared-sram-size:
+  integrated-sram-size:
     description: "How big is sram/program stack"
     default: 8192
     required: false
@@ -43,9 +43,9 @@ runs:
         ./run.py --cpu-type ${{ inputs.cpu-type }} --cpu-variant ${{ inputs.cpu-variant }} --integrated-sram-size ${{ inputs.integrated-sram-size }} --threads ${{ inputs.threads }} --benchmark-strategy ${{ inputs.benchmark-strategy }} --use-cache ${{ inputs.use-cache }}
 
     - uses: actions/upload-artifact@v2
-        if: ${{ always() }}
-        with:
-          name: ${{github.job}}
-          path: |
-            ./*/*.json
-            ./**/*.log
+      if: ${{ always() }}
+      with:
+        name: ${{github.job}}
+        path: |
+          ./*/*.json
+          ./**/*.log
