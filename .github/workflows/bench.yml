@@ -106,24 +106,24 @@ jobs:
           sudo pip3 install tabulate sphinx jinja2
           sudo pip3 install git+https://github.com/antmicro/sphinx_antmicro_theme.git
           ./table_maker.py --dirs \
-          benching/cv32e40p_standard_32_False \
-          benching/cv32e41p_standard_32_False \
-          benching/cva5_standard_32_False \
-          benching/femtorv_standard_32_False \
-          benching/firev_standard_32_False \
-          benching/ibex_standard_32_False \
-          benching/lm32_standard_32_False \
-          benching/marocchino_standard_32_False \
-          benching/minerva_standard_32_False \
-          benching/mor1kx_standard_32_False \
-          benching/naxriscv_standard_32_False \
-          benching/neorv32_standard_32_False \
-          benching/picorv32_standard_32_False \
-          benching/vexriscv_standard_32_False \
-          benching/vexriscv_smp_standard_32_False \
-          benching_blackparrot/blackparrot_sim_32_False \
-          benching_microwatt/microwatt_standard\+ghdl_32_False \
-          benching_serv/serv_standard_32_False \
+          benching/cv32e40p_standard_32_false \
+          benching/cv32e41p_standard_32_false \
+          benching/cva5_standard_32_false \
+          benching/femtorv_standard_32_false \
+          benching/firev_standard_32_false \
+          benching/ibex_standard_32_false \
+          benching/lm32_standard_32_false \
+          benching/marocchino_standard_32_false \
+          benching/minerva_standard_32_false \
+          benching/mor1kx_standard_32_false \
+          benching/naxriscv_standard_32_false \
+          benching/neorv32_standard_32_false \
+          benching/picorv32_standard_32_false \
+          benching/vexriscv_standard_32_false \
+          benching/vexriscv_smp_standard_32_false \
+          benching_blackparrot/blackparrot_sim_32_false \
+          benching_microwatt/microwatt_standard\+ghdl_32_false \
+          benching_serv/serv_standard_32_false \
           --out-dir docs/source --templates-dir docs/source/templates
           cd docs
           make html
