@@ -2,7 +2,7 @@ name: CPU Benchmarking
 
 on:
   push:
-    branches: [ main, ci-cron-dependabot ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
   schedule:
