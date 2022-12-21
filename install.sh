@@ -18,6 +18,9 @@ cp litex/litex_setup.py .
 chmod +x litex_setup.py
 ./litex_setup.py --init --install --user --dev --config full
 
+# apply cpu patches
+quilt push -a
+
 cd third_party
 
 # yosys install

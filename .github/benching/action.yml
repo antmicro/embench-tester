@@ -33,7 +33,7 @@ runs:
         sudo apt-get update
         sudo apt-get -y install gnat python3 python3-setuptools python3-pip zlib1g-dev tcl8.6-dev git make
         sudo apt-get -y install clang libreadline-dev gawk libffi-dev graphviz xdot libboost-system-dev libboost-python-dev libboost-filesystem-dev
-        sudo apt-get -y install libevent-dev libjson-c-dev ca-certificates
+        sudo apt-get -y install libevent-dev libjson-c-dev ca-certificates quilt
         pip3 install gitpython
         sudo ./sbtinstall.sh
         git config --global url.https://github.com/.insteadof "git@github.com:"
