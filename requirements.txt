@@ -1,5 +1,5 @@
 gitpython
-meson
+meson==0.59
 ninja
 amaranth
 amaranth-yosys
