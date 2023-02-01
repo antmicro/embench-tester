@@ -1,0 +1,17 @@
+Index: embench-tester/pythondata-cpu-mor1kx/pythondata_cpu_mor1kx/verilog/rtl/verilog/mor1kx_cpu.v
+===================================================================
+--- embench-tester.orig/pythondata-cpu-mor1kx/pythondata_cpu_mor1kx/verilog/rtl/verilog/mor1kx_cpu.v
++++ embench-tester/pythondata-cpu-mor1kx/pythondata_cpu_mor1kx/verilog/rtl/verilog/mor1kx_cpu.v
+@@ -197,11 +197,11 @@ module mor1kx_cpu
+ 
+ 	// synthesis translate_off
+ `ifndef SYNTHESIS
++`include "mor1kx_utils.vh"
+    /* Provide interface hooks for register functions. */
+    generate
+       if (OPTION_CPU=="CAPPUCCINO") begin : monitor
+ 
+-`include "mor1kx_utils.vh"
+          localparam RF_ADDR_WIDTH = calc_rf_addr_width(OPTION_RF_ADDR_WIDTH,
+                                                        OPTION_RF_NUM_SHADOW_GPR);
+ 
