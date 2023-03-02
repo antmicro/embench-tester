@@ -1,0 +1,1359 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="">
+    
+    
+      
+        <title><no title> - Embench Tester - Dashboard</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.fa3fbbd75cfdd7cef.min.css" />
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="deep-orange">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Embench Tester - Dashboard" class="md-header__button md-logo" aria-label="Embench Tester - Dashboard" data-md-component="logo">
+      <img src="_static/white.svg" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Embench Tester - Dashboard
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              &lt;no title&gt;
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="deep-orange"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <div class="md-header__button">
+        <a href="embench-tester--dashboard.pdf" title="PDF - embench-tester--dashboard.pdf">
+          <div class="md-icon">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M64 0C28.7 0 0 28.7 0 64v384c0 35.3 28.7 64 64 64h256c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zm192 0v128h128L256 0zM64 224h24c30.9 0 56 25.1 56 56s-25.1 56-56 56h-8v32c0 8.8-7.2 16-16 16s-16-7.2-16-16V240c0-8.8 7.2-16 16-16zm24 80c13.3 0 24-10.7 24-24s-10.7-24-24-24h-8v48h8zm72-64c0-8.8 7.2-16 16-16h24c26.5 0 48 21.5 48 48v64c0 26.5-21.5 48-48 48h-24c-8.8 0-16-7.2-16-16V240zm32 112h8c8.8 0 16-7.2 16-16v-64c0-8.8-7.2-16-16-16h-8v96zm96-128h48c8.8 0 16 7.2 16 16s-7.2 16-16 16h-32v32h32c8.8 0 16 7.2 16 16s-7.2 16-16 16h-32v48c0 8.8-7.2 16-16 16s-16-7.2-16-16V240c0-8.8 7.2-16 16-16z"/></svg>
+          </div>
+        </a>
+      </div>
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+<table class="docutils data align-default" id="id1">
+<caption><span class="caption-text">Relative tests results: [%]</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head stub"></th>
+<th class="head"><p>cv32e40p_standard_32_false</p></th>
+<th class="head"><p>cv32e41p_standard_32_false</p></th>
+<th class="head"><p>cva5_standard_32_false</p></th>
+<th class="head"><p>femtorv_standard_32_false</p></th>
+<th class="head"><p>firev_standard_32_false</p></th>
+<th class="head"><p>ibex_standard_32_false</p></th>
+<th class="head"><p>lm32_standard_32_false</p></th>
+<th class="head"><p>marocchino_standard_32_false</p></th>
+<th class="head"><p>minerva_standard_32_false</p></th>
+<th class="head"><p>mor1kx_standard_32_false</p></th>
+<th class="head"><p>naxriscv_standard_32_false</p></th>
+<th class="head"><p>neorv32_standard_32_false</p></th>
+<th class="head"><p>picorv32_standard_32_false</p></th>
+<th class="head"><p>vexriscv_standard_32_false</p></th>
+<th class="head"><p>vexriscv_smp_standard_32_false</p></th>
+<th class="head"><p>blackparrot_sim_32_false</p></th>
+<th class="head"><p>microwatt_standard+ghdl_32_false</p></th>
+<th class="head"><p>serv_standard_32_false</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>aha-mont64</p></th>
+<td><p>46.0</p></td>
+<td><p>41.0</p></td>
+<td><p>82.0</p></td>
+<td><p>4.0</p></td>
+<td><p>7.0</p></td>
+<td><p>46.0</p></td>
+<td><p>45.0</p></td>
+<td><p>52.0</p></td>
+<td><p>7.0</p></td>
+<td><p>55.0</p></td>
+<td><p>118.0</p></td>
+<td><p>31.0</p></td>
+<td><p>14.0</p></td>
+<td><p>74.0</p></td>
+<td><p>71.0</p></td>
+<td><p>131.0</p></td>
+<td><p>155.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>crc32</p></th>
+<td><p>41.0</p></td>
+<td><p>36.0</p></td>
+<td><p>92.0</p></td>
+<td><p>11.0</p></td>
+<td><p>25.0</p></td>
+<td><p>38.0</p></td>
+<td><p>58.0</p></td>
+<td><p>55.0</p></td>
+<td><p>9.0</p></td>
+<td><p>70.0</p></td>
+<td><p>40.0</p></td>
+<td><p>29.0</p></td>
+<td><p>15.0</p></td>
+<td><p>74.0</p></td>
+<td><p>72.0</p></td>
+<td><p>92.0</p></td>
+<td><p>68.0</p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>cubic</p></th>
+<td><p>24.0</p></td>
+<td><p>22.0</p></td>
+<td><p>46.0</p></td>
+<td><p>2.0</p></td>
+<td><p>2.0</p></td>
+<td><p>23.0</p></td>
+<td><p>19.0</p></td>
+<td><p>24.0</p></td>
+<td><p>6.0</p></td>
+<td><p>29.0</p></td>
+<td><p>15.0</p></td>
+<td><p>10.0</p></td>
+<td><p>8.0</p></td>
+<td><p>26.0</p></td>
+<td><p>23.0</p></td>
+<td><p>239.0</p></td>
+<td><p>99.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>edn</p></th>
+<td><p>42.0</p></td>
+<td><p>37.0</p></td>
+<td><p>90.0</p></td>
+<td><p>1.0</p></td>
+<td><p>2.0</p></td>
+<td><p>38.0</p></td>
+<td><p>62.0</p></td>
+<td><p>55.0</p></td>
+<td><p>44.0</p></td>
+<td><p>60.0</p></td>
+<td><p>24.0</p></td>
+<td><p>31.0</p></td>
+<td><p>10.0</p></td>
+<td><p>87.0</p></td>
+<td><p>77.0</p></td>
+<td><p>90.0</p></td>
+<td><p>52.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>huffbench</p></th>
+<td><p>46.0</p></td>
+<td><p>44.0</p></td>
+<td><p>115.0</p></td>
+<td><p>31.0</p></td>
+<td><p>44.0</p></td>
+<td><p>47.0</p></td>
+<td><p>82.0</p></td>
+<td><p>61.0</p></td>
+<td><p>21.0</p></td>
+<td><p>88.0</p></td>
+<td><p>35.0</p></td>
+<td><p>39.0</p></td>
+<td><p>28.0</p></td>
+<td><p>112.0</p></td>
+<td><p>96.0</p></td>
+<td><p>119.0</p></td>
+<td><p>76.0</p></td>
+<td><p>3.0</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>matmult-int</p></th>
+<td><p>39.0</p></td>
+<td><p>34.0</p></td>
+<td><p>90.0</p></td>
+<td><p>3.0</p></td>
+<td><p>3.0</p></td>
+<td><p>37.0</p></td>
+<td><p>52.0</p></td>
+<td><p>39.0</p></td>
+<td><p>60.0</p></td>
+<td><p>56.0</p></td>
+<td><p>21.0</p></td>
+<td><p>33.0</p></td>
+<td><p>13.0</p></td>
+<td><p>82.0</p></td>
+<td><p>62.0</p></td>
+<td><p>91.0</p></td>
+<td><p>44.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>md5sum</p></th>
+<td><p>64.0</p></td>
+<td><p>56.0</p></td>
+<td><p>153.0</p></td>
+<td><p>31.0</p></td>
+<td><p>56.0</p></td>
+<td><p>67.0</p></td>
+<td><p>84.0</p></td>
+<td><p>77.0</p></td>
+<td><p>19.0</p></td>
+<td><p>108.0</p></td>
+<td><p>65.0</p></td>
+<td><p>48.0</p></td>
+<td><p>32.0</p></td>
+<td><p>124.0</p></td>
+<td><p>115.0</p></td>
+<td><p>137.0</p></td>
+<td><p>115.0</p></td>
+<td><p>3.0</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>minver</p></th>
+<td><p>38.0</p></td>
+<td><p>32.0</p></td>
+<td><p>82.0</p></td>
+<td><p>1.0</p></td>
+<td><p>2.0</p></td>
+<td><p>37.0</p></td>
+<td><p>27.0</p></td>
+<td><p>29.0</p></td>
+<td><p>8.0</p></td>
+<td><p>34.0</p></td>
+<td><p>27.0</p></td>
+<td><p>15.0</p></td>
+<td><p>13.0</p></td>
+<td><p>60.0</p></td>
+<td><p>62.0</p></td>
+<td><p>334.0</p></td>
+<td><p>77.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>nbody</p></th>
+<td><p>45.0</p></td>
+<td><p>37.0</p></td>
+<td><p>90.0</p></td>
+<td><p>2.0</p></td>
+<td><p>2.0</p></td>
+<td><p>45.0</p></td>
+<td><p>23.0</p></td>
+<td><p>30.0</p></td>
+<td><p>9.0</p></td>
+<td><p>37.0</p></td>
+<td><p>39.0</p></td>
+<td><p>16.0</p></td>
+<td><p>14.0</p></td>
+<td><p>59.0</p></td>
+<td><p>52.0</p></td>
+<td><p>1597.0</p></td>
+<td><p>108.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>nettle-aes</p></th>
+<td><p>38.0</p></td>
+<td><p>33.0</p></td>
+<td><p>90.0</p></td>
+<td><p>10.0</p></td>
+<td><p>27.0</p></td>
+<td><p>39.0</p></td>
+<td><p>51.0</p></td>
+<td><p>53.0</p></td>
+<td><p>6.0</p></td>
+<td><p>67.0</p></td>
+<td><p>29.0</p></td>
+<td><p>28.0</p></td>
+<td><p>17.0</p></td>
+<td><p>58.0</p></td>
+<td><p>47.0</p></td>
+<td><p>71.0</p></td>
+<td><p>93.0</p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>nettle-sha256</p></th>
+<td><p>40.0</p></td>
+<td><p>37.0</p></td>
+<td><p>93.0</p></td>
+<td><p>10.0</p></td>
+<td><p>39.0</p></td>
+<td><p>41.0</p></td>
+<td><p>33.0</p></td>
+<td><p>23.0</p></td>
+<td><p>5.0</p></td>
+<td><p>33.0</p></td>
+<td><p>40.0</p></td>
+<td><p>22.0</p></td>
+<td><p>16.0</p></td>
+<td><p>54.0</p></td>
+<td><p>49.0</p></td>
+<td><p>62.0</p></td>
+<td><p>112.0</p></td>
+<td><p>2.0</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>nsichneu</p></th>
+<td><p>39.0</p></td>
+<td><p>41.0</p></td>
+<td><p>67.0</p></td>
+<td><p>35.0</p></td>
+<td><p>25.0</p></td>
+<td><p>38.0</p></td>
+<td><p>33.0</p></td>
+<td><p>24.0</p></td>
+<td><p>17.0</p></td>
+<td><p>36.0</p></td>
+<td><p>18.0</p></td>
+<td><p>18.0</p></td>
+<td><p>30.0</p></td>
+<td><p>33.0</p></td>
+<td><p>23.0</p></td>
+<td><p>111.0</p></td>
+<td><p>34.0</p></td>
+<td><p>3.0</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>picojpeg</p></th>
+<td><p>37.0</p></td>
+<td><p>33.0</p></td>
+<td><p>94.0</p></td>
+<td><p>13.0</p></td>
+<td><p>30.0</p></td>
+<td><p>37.0</p></td>
+<td><p>57.0</p></td>
+<td><p>55.0</p></td>
+<td><p>11.0</p></td>
+<td><p>72.0</p></td>
+<td><p>25.0</p></td>
+<td><p>23.0</p></td>
+<td><p>15.0</p></td>
+<td><p>68.0</p></td>
+<td><p>67.0</p></td>
+<td><p>94.0</p></td>
+<td><p>71.0</p></td>
+<td><p>2.0</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>primecount</p></th>
+<td><p>60.0</p></td>
+<td><p>54.0</p></td>
+<td><p>93.0</p></td>
+<td><p>15.0</p></td>
+<td><p>18.0</p></td>
+<td><p>57.0</p></td>
+<td><p>80.0</p></td>
+<td><p>62.0</p></td>
+<td><p>16.0</p></td>
+<td><p>89.0</p></td>
+<td><p>43.0</p></td>
+<td><p>48.0</p></td>
+<td><p>29.0</p></td>
+<td><p>95.0</p></td>
+<td><p>89.0</p></td>
+<td><p>127.0</p></td>
+<td><p>81.0</p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>qrduino</p></th>
+<td><p>54.0</p></td>
+<td><p>51.0</p></td>
+<td><p>115.0</p></td>
+<td><p>18.0</p></td>
+<td><p>26.0</p></td>
+<td><p>56.0</p></td>
+<td><p>84.0</p></td>
+<td><p>68.0</p></td>
+<td><p>11.0</p></td>
+<td><p>95.0</p></td>
+<td><p>39.0</p></td>
+<td><p>37.0</p></td>
+<td><p>25.0</p></td>
+<td><p>110.0</p></td>
+<td><p>110.0</p></td>
+<td><p>113.0</p></td>
+<td><p>82.0</p></td>
+<td><p>2.0</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>sglib-combined</p></th>
+<td><p>45.0</p></td>
+<td><p>42.0</p></td>
+<td><p>101.0</p></td>
+<td><p>18.0</p></td>
+<td><p>26.0</p></td>
+<td><p>45.0</p></td>
+<td><p>62.0</p></td>
+<td><p>51.0</p></td>
+<td><p>21.0</p></td>
+<td><p>74.0</p></td>
+<td><p>26.0</p></td>
+<td><p>32.0</p></td>
+<td><p>27.0</p></td>
+<td><p>80.0</p></td>
+<td><p>76.0</p></td>
+<td><p>98.0</p></td>
+<td><p>68.0</p></td>
+<td><p>2.0</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>slre</p></th>
+<td><p>55.0</p></td>
+<td><p>49.0</p></td>
+<td><p>131.0</p></td>
+<td><p>35.0</p></td>
+<td><p>46.0</p></td>
+<td><p>56.0</p></td>
+<td><p>71.0</p></td>
+<td><p>63.0</p></td>
+<td><p>22.0</p></td>
+<td><p>93.0</p></td>
+<td><p>34.0</p></td>
+<td><p>27.0</p></td>
+<td><p>31.0</p></td>
+<td><p>105.0</p></td>
+<td><p>69.0</p></td>
+<td><p>139.0</p></td>
+<td><p>87.0</p></td>
+<td><p>3.0</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>st</p></th>
+<td><p>43.0</p></td>
+<td><p>34.0</p></td>
+<td><p>86.0</p></td>
+<td><p>2.0</p></td>
+<td><p>2.0</p></td>
+<td><p>42.0</p></td>
+<td><p>19.0</p></td>
+<td><p>25.0</p></td>
+<td><p>8.0</p></td>
+<td><p>31.0</p></td>
+<td><p>35.0</p></td>
+<td><p>13.0</p></td>
+<td><p>14.0</p></td>
+<td><p>59.0</p></td>
+<td><p>57.0</p></td>
+<td><p>907.0</p></td>
+<td><p>140.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>statemate</p></th>
+<td><p>52.0</p></td>
+<td><p>50.0</p></td>
+<td><p>181.0</p></td>
+<td><p>39.0</p></td>
+<td><p>56.0</p></td>
+<td><p>51.0</p></td>
+<td><p>66.0</p></td>
+<td><p>44.0</p></td>
+<td><p>24.0</p></td>
+<td><p>65.0</p></td>
+<td><p>32.0</p></td>
+<td><p>31.0</p></td>
+<td><p>34.0</p></td>
+<td><p>140.0</p></td>
+<td><p>109.0</p></td>
+<td><p>203.0</p></td>
+<td><p>148.0</p></td>
+<td><p>3.0</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>tarfind</p></th>
+<td><p>38.0</p></td>
+<td><p>39.0</p></td>
+<td><p>143.0</p></td>
+<td><p>4.0</p></td>
+<td><p>11.0</p></td>
+<td><p>41.0</p></td>
+<td><p>48.0</p></td>
+<td><p>50.0</p></td>
+<td><p>53.0</p></td>
+<td><p>73.0</p></td>
+<td><p>54.0</p></td>
+<td><p>34.0</p></td>
+<td><p>25.0</p></td>
+<td><p>91.0</p></td>
+<td><p>74.0</p></td>
+<td><p>77.0</p></td>
+<td><p>72.0</p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>ud</p></th>
+<td><p>36.0</p></td>
+<td><p>32.0</p></td>
+<td><p>79.0</p></td>
+<td><p>8.0</p></td>
+<td><p>15.0</p></td>
+<td><p>36.0</p></td>
+<td><p>34.0</p></td>
+<td><p>38.0</p></td>
+<td><p>16.0</p></td>
+<td><p>47.0</p></td>
+<td><p>29.0</p></td>
+<td><p>18.0</p></td>
+<td><p>15.0</p></td>
+<td><p>51.0</p></td>
+<td><p>46.0</p></td>
+<td><p>73.0</p></td>
+<td><p>43.0</p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>wikisort</p></th>
+<td><p>65.0</p></td>
+<td><p>57.0</p></td>
+<td><p>166.0</p></td>
+<td><p>3.0</p></td>
+<td><p>5.0</p></td>
+<td><p>67.0</p></td>
+<td><p>41.0</p></td>
+<td><p>52.0</p></td>
+<td><p>28.0</p></td>
+<td><p>65.0</p></td>
+<td><p>44.0</p></td>
+<td><p>32.0</p></td>
+<td><p>26.0</p></td>
+<td><p>102.0</p></td>
+<td><p>91.0</p></td>
+<td><p>242.0</p></td>
+<td><p>97.0</p></td>
+<td><p>0.0</p></td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>This results present CPU performance compared to ARM Cortex M4</p></li>
+<li><p>Higher values are better</p></li>
+</ul>
+<table class="docutils data align-default" id="id2">
+<caption><span class="caption-text">Benchmark statistics:</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head stub"></th>
+<th class="head"><p>cv32e40p_standard_32_false</p></th>
+<th class="head"><p>cv32e41p_standard_32_false</p></th>
+<th class="head"><p>cva5_standard_32_false</p></th>
+<th class="head"><p>femtorv_standard_32_false</p></th>
+<th class="head"><p>firev_standard_32_false</p></th>
+<th class="head"><p>ibex_standard_32_false</p></th>
+<th class="head"><p>lm32_standard_32_false</p></th>
+<th class="head"><p>marocchino_standard_32_false</p></th>
+<th class="head"><p>minerva_standard_32_false</p></th>
+<th class="head"><p>mor1kx_standard_32_false</p></th>
+<th class="head"><p>naxriscv_standard_32_false</p></th>
+<th class="head"><p>neorv32_standard_32_false</p></th>
+<th class="head"><p>picorv32_standard_32_false</p></th>
+<th class="head"><p>vexriscv_standard_32_false</p></th>
+<th class="head"><p>vexriscv_smp_standard_32_false</p></th>
+<th class="head"><p>blackparrot_sim_32_false</p></th>
+<th class="head"><p>microwatt_standard+ghdl_32_false</p></th>
+<th class="head"><p>serv_standard_32_false</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>speed geometric mean</p></th>
+<td><p>44.0</p></td>
+<td><p>39.0</p></td>
+<td><p>99.0</p></td>
+<td><p>8.0</p></td>
+<td><p>12.0</p></td>
+<td><p>43.0</p></td>
+<td><p>47.0</p></td>
+<td><p>44.0</p></td>
+<td><p>15.0</p></td>
+<td><p>58.0</p></td>
+<td><p>34.0</p></td>
+<td><p>26.0</p></td>
+<td><p>19.0</p></td>
+<td><p>74.0</p></td>
+<td><p>65.0</p></td>
+<td><p>147.0</p></td>
+<td><p>81.0</p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>speed geometric standard deviation</p></th>
+<td><p>1.25</p></td>
+<td><p>1.26</p></td>
+<td><p>1.35</p></td>
+<td><p>3.28</p></td>
+<td><p>3.37</p></td>
+<td><p>1.26</p></td>
+<td><p>1.58</p></td>
+<td><p>1.45</p></td>
+<td><p>1.99</p></td>
+<td><p>1.48</p></td>
+<td><p>1.55</p></td>
+<td><p>1.5</p></td>
+<td><p>1.5</p></td>
+<td><p>1.5</p></td>
+<td><p>1.52</p></td>
+<td><p>2.2</p></td>
+<td><p>1.47</p></td>
+<td><p>3.45</p></td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Benchmark consists of multiple invidual tests</p></li>
+<li><p>Higher geometric mean is better</p></li>
+<li><p>Lower standard deviation is better, more consistent results</p></li>
+</ul>
+<table class="docutils data align-default" id="id3">
+<caption><span class="caption-text">Absolute tests results: [ms]</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head stub"></th>
+<th class="head"><p>cv32e40p_standard_32_false</p></th>
+<th class="head"><p>cv32e41p_standard_32_false</p></th>
+<th class="head"><p>cva5_standard_32_false</p></th>
+<th class="head"><p>femtorv_standard_32_false</p></th>
+<th class="head"><p>firev_standard_32_false</p></th>
+<th class="head"><p>ibex_standard_32_false</p></th>
+<th class="head"><p>lm32_standard_32_false</p></th>
+<th class="head"><p>marocchino_standard_32_false</p></th>
+<th class="head"><p>minerva_standard_32_false</p></th>
+<th class="head"><p>mor1kx_standard_32_false</p></th>
+<th class="head"><p>naxriscv_standard_32_false</p></th>
+<th class="head"><p>neorv32_standard_32_false</p></th>
+<th class="head"><p>picorv32_standard_32_false</p></th>
+<th class="head"><p>vexriscv_standard_32_false</p></th>
+<th class="head"><p>vexriscv_smp_standard_32_false</p></th>
+<th class="head"><p>blackparrot_sim_32_false</p></th>
+<th class="head"><p>microwatt_standard+ghdl_32_false</p></th>
+<th class="head"><p>serv_standard_32_false</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>aha-mont64</p></th>
+<td><p>8623</p></td>
+<td><p>9852</p></td>
+<td><p>4881</p></td>
+<td><p>110764</p></td>
+<td><p>60125</p></td>
+<td><p>8626</p></td>
+<td><p>8963</p></td>
+<td><p>7711</p></td>
+<td><p>55335</p></td>
+<td><p>7280</p></td>
+<td><p>3395</p></td>
+<td><p>13072</p></td>
+<td><p>29142</p></td>
+<td><p>5442</p></td>
+<td><p>5618</p></td>
+<td><p>3060</p></td>
+<td><p>2581</p></td>
+<td><p>1120897</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>crc32</p></th>
+<td><p>9753</p></td>
+<td><p>11146</p></td>
+<td><p>4354</p></td>
+<td><p>36912</p></td>
+<td><p>16020</p></td>
+<td><p>10623</p></td>
+<td><p>6928</p></td>
+<td><p>7319</p></td>
+<td><p>42456</p></td>
+<td><p>5750</p></td>
+<td><p>9927</p></td>
+<td><p>13757</p></td>
+<td><p>26642</p></td>
+<td><p>5399</p></td>
+<td><p>5573</p></td>
+<td><p>4355</p></td>
+<td><p>5923</p></td>
+<td><p>322476</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>cubic</p></th>
+<td><p>16340</p></td>
+<td><p>18209</p></td>
+<td><p>8585</p></td>
+<td><p>261289</p></td>
+<td><p>172731</p></td>
+<td><p>16774</p></td>
+<td><p>20427</p></td>
+<td><p>16561</p></td>
+<td><p>61750</p></td>
+<td><p>13463</p></td>
+<td><p>26819</p></td>
+<td><p>39248</p></td>
+<td><p>47694</p></td>
+<td><p>15027</p></td>
+<td><p>17101</p></td>
+<td><p>1645</p></td>
+<td><p>3983</p></td>
+<td><p>3058139</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>edn</p></th>
+<td><p>9506</p></td>
+<td><p>10812</p></td>
+<td><p>4475</p></td>
+<td><p>310023</p></td>
+<td><p>225162</p></td>
+<td><p>10573</p></td>
+<td><p>6430</p></td>
+<td><p>7349</p></td>
+<td><p>9080</p></td>
+<td><p>6700</p></td>
+<td><p>16956</p></td>
+<td><p>12925</p></td>
+<td><p>39252</p></td>
+<td><p>4583</p></td>
+<td><p>5200</p></td>
+<td><p>4463</p></td>
+<td><p>7659</p></td>
+<td><p>4039485</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>huffbench</p></th>
+<td><p>8871</p></td>
+<td><p>9432</p></td>
+<td><p>3571</p></td>
+<td><p>13155</p></td>
+<td><p>9303</p></td>
+<td><p>8788</p></td>
+<td><p>5043</p></td>
+<td><p>6715</p></td>
+<td><p>19632</p></td>
+<td><p>4694</p></td>
+<td><p>11722</p></td>
+<td><p>10597</p></td>
+<td><p>14689</p></td>
+<td><p>3671</p></td>
+<td><p>4296</p></td>
+<td><p>3457</p></td>
+<td><p>5437</p></td>
+<td><p>153910</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>matmult-int</p></th>
+<td><p>10278</p></td>
+<td><p>11758</p></td>
+<td><p>4406</p></td>
+<td><p>152955</p></td>
+<td><p>116311</p></td>
+<td><p>10866</p></td>
+<td><p>7716</p></td>
+<td><p>10119</p></td>
+<td><p>6598</p></td>
+<td><p>7112</p></td>
+<td><p>19199</p></td>
+<td><p>12224</p></td>
+<td><p>30703</p></td>
+<td><p>4889</p></td>
+<td><p>6475</p></td>
+<td><p>4382</p></td>
+<td><p>8993</p></td>
+<td><p>2015765</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>md5sum</p></th>
+<td><p>6251</p></td>
+<td><p>7089</p></td>
+<td><p>2618</p></td>
+<td><p>12806</p></td>
+<td><p>7210</p></td>
+<td><p>5973</p></td>
+<td><p>4786</p></td>
+<td><p>5223</p></td>
+<td><p>21073</p></td>
+<td><p>3717</p></td>
+<td><p>6172</p></td>
+<td><p>8270</p></td>
+<td><p>12558</p></td>
+<td><p>3220</p></td>
+<td><p>3494</p></td>
+<td><p>2915</p></td>
+<td><p>3469</p></td>
+<td><p>123217</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>minver</p></th>
+<td><p>10614</p></td>
+<td><p>12655</p></td>
+<td><p>4864</p></td>
+<td><p>323092</p></td>
+<td><p>234827</p></td>
+<td><p>10922</p></td>
+<td><p>14797</p></td>
+<td><p>14019</p></td>
+<td><p>47807</p></td>
+<td><p>11695</p></td>
+<td><p>14662</p></td>
+<td><p>26542</p></td>
+<td><p>29792</p></td>
+<td><p>6642</p></td>
+<td><p>6434</p></td>
+<td><p>1197</p></td>
+<td><p>5191</p></td>
+<td><p>4052253</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>nbody</p></th>
+<td><p>6228</p></td>
+<td><p>7617</p></td>
+<td><p>3124</p></td>
+<td><p>185188</p></td>
+<td><p>130616</p></td>
+<td><p>6293</p></td>
+<td><p>12155</p></td>
+<td><p>9433</p></td>
+<td><p>31868</p></td>
+<td><p>7664</p></td>
+<td><p>7147</p></td>
+<td><p>17069</p></td>
+<td><p>19418</p></td>
+<td><p>4791</p></td>
+<td><p>5388</p></td>
+<td><p>176</p></td>
+<td><p>2610</p></td>
+<td><p>2292102</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>nettle-aes</p></th>
+<td><p>10604</p></td>
+<td><p>12093</p></td>
+<td><p>4482</p></td>
+<td><p>39384</p></td>
+<td><p>14797</p></td>
+<td><p>10439</p></td>
+<td><p>7878</p></td>
+<td><p>7530</p></td>
+<td><p>64986</p></td>
+<td><p>5975</p></td>
+<td><p>13817</p></td>
+<td><p>14295</p></td>
+<td><p>23986</p></td>
+<td><p>6903</p></td>
+<td><p>8637</p></td>
+<td><p>5660</p></td>
+<td><p>4316</p></td>
+<td><p>316406</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>nettle-sha256</p></th>
+<td><p>9962</p></td>
+<td><p>10736</p></td>
+<td><p>4286</p></td>
+<td><p>38354</p></td>
+<td><p>10361</p></td>
+<td><p>9780</p></td>
+<td><p>12190</p></td>
+<td><p>17539</p></td>
+<td><p>76443</p></td>
+<td><p>11991</p></td>
+<td><p>10092</p></td>
+<td><p>18238</p></td>
+<td><p>25545</p></td>
+<td><p>7417</p></td>
+<td><p>8142</p></td>
+<td><p>6418</p></td>
+<td><p>3568</p></td>
+<td><p>226615</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>nsichneu</p></th>
+<td><p>10392</p></td>
+<td><p>9757</p></td>
+<td><p>5940</p></td>
+<td><p>11407</p></td>
+<td><p>15978</p></td>
+<td><p>10525</p></td>
+<td><p>12021</p></td>
+<td><p>16621</p></td>
+<td><p>23328</p></td>
+<td><p>11126</p></td>
+<td><p>22374</p></td>
+<td><p>22748</p></td>
+<td><p>13194</p></td>
+<td><p>12258</p></td>
+<td><p>17581</p></td>
+<td><p>3606</p></td>
+<td><p>11674</p></td>
+<td><p>157984</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>picojpeg</p></th>
+<td><p>10934</p></td>
+<td><p>12068</p></td>
+<td><p>4279</p></td>
+<td><p>31646</p></td>
+<td><p>13521</p></td>
+<td><p>11014</p></td>
+<td><p>7113</p></td>
+<td><p>7271</p></td>
+<td><p>38344</p></td>
+<td><p>5602</p></td>
+<td><p>16106</p></td>
+<td><p>17252</p></td>
+<td><p>26024</p></td>
+<td><p>5936</p></td>
+<td><p>5995</p></td>
+<td><p>4280</p></td>
+<td><p>5674</p></td>
+<td><p>257783</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>primecount</p></th>
+<td><p>6386</p></td>
+<td><p>7134</p></td>
+<td><p>4108</p></td>
+<td><p>25578</p></td>
+<td><p>21480</p></td>
+<td><p>6695</p></td>
+<td><p>4801</p></td>
+<td><p>6197</p></td>
+<td><p>23438</p></td>
+<td><p>4287</p></td>
+<td><p>8872</p></td>
+<td><p>7953</p></td>
+<td><p>13325</p></td>
+<td><p>4023</p></td>
+<td><p>4285</p></td>
+<td><p>3020</p></td>
+<td><p>4758</p></td>
+<td><p>337426</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>qrduino</p></th>
+<td><p>7941</p></td>
+<td><p>8289</p></td>
+<td><p>3699</p></td>
+<td><p>23428</p></td>
+<td><p>16311</p></td>
+<td><p>7596</p></td>
+<td><p>5070</p></td>
+<td><p>6220</p></td>
+<td><p>40159</p></td>
+<td><p>4492</p></td>
+<td><p>10799</p></td>
+<td><p>11592</p></td>
+<td><p>17301</p></td>
+<td><p>3882</p></td>
+<td><p>3872</p></td>
+<td><p>3757</p></td>
+<td><p>5201</p></td>
+<td><p>278813</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>sglib-combined</p></th>
+<td><p>8770</p></td>
+<td><p>9576</p></td>
+<td><p>3938</p></td>
+<td><p>22130</p></td>
+<td><p>15495</p></td>
+<td><p>8908</p></td>
+<td><p>6397</p></td>
+<td><p>7879</p></td>
+<td><p>19050</p></td>
+<td><p>5412</p></td>
+<td><p>15414</p></td>
+<td><p>12295</p></td>
+<td><p>14879</p></td>
+<td><p>4981</p></td>
+<td><p>5245</p></td>
+<td><p>4048</p></td>
+<td><p>5858</p></td>
+<td><p>245880</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>slre</p></th>
+<td><p>7304</p></td>
+<td><p>8190</p></td>
+<td><p>3068</p></td>
+<td><p>11437</p></td>
+<td><p>8689</p></td>
+<td><p>7218</p></td>
+<td><p>5610</p></td>
+<td><p>6322</p></td>
+<td><p>18290</p></td>
+<td><p>4299</p></td>
+<td><p>11745</p></td>
+<td><p>14958</p></td>
+<td><p>12808</p></td>
+<td><p>3833</p></td>
+<td><p>5820</p></td>
+<td><p>2889</p></td>
+<td><p>4624</p></td>
+<td><p>138148</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>st</p></th>
+<td><p>9575</p></td>
+<td><p>12016</p></td>
+<td><p>4722</p></td>
+<td><p>269502</p></td>
+<td><p>188816</p></td>
+<td><p>9793</p></td>
+<td><p>21397</p></td>
+<td><p>16466</p></td>
+<td><p>50949</p></td>
+<td><p>13116</p></td>
+<td><p>11546</p></td>
+<td><p>31225</p></td>
+<td><p>29974</p></td>
+<td><p>6884</p></td>
+<td><p>7210</p></td>
+<td><p>450</p></td>
+<td><p>2919</p></td>
+<td><p>3297097</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>statemate</p></th>
+<td><p>7673</p></td>
+<td><p>7946</p></td>
+<td><p>2214</p></td>
+<td><p>10130</p></td>
+<td><p>7188</p></td>
+<td><p>7803</p></td>
+<td><p>6099</p></td>
+<td><p>9155</p></td>
+<td><p>16496</p></td>
+<td><p>6193</p></td>
+<td><p>12545</p></td>
+<td><p>12959</p></td>
+<td><p>11688</p></td>
+<td><p>2852</p></td>
+<td><p>3685</p></td>
+<td><p>1966</p></td>
+<td><p>2697</p></td>
+<td><p>116687</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>tarfind</p></th>
+<td><p>10601</p></td>
+<td><p>10251</p></td>
+<td><p>2812</p></td>
+<td><p>101646</p></td>
+<td><p>36955</p></td>
+<td><p>9934</p></td>
+<td><p>8486</p></td>
+<td><p>8147</p></td>
+<td><p>7660</p></td>
+<td><p>5532</p></td>
+<td><p>7429</p></td>
+<td><p>11849</p></td>
+<td><p>16028</p></td>
+<td><p>4441</p></td>
+<td><p>5476</p></td>
+<td><p>5258</p></td>
+<td><p>5586</p></td>
+<td><p>761934</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>ud</p></th>
+<td><p>11162</p></td>
+<td><p>12673</p></td>
+<td><p>5040</p></td>
+<td><p>48754</p></td>
+<td><p>26350</p></td>
+<td><p>11152</p></td>
+<td><p>11914</p></td>
+<td><p>10469</p></td>
+<td><p>25647</p></td>
+<td><p>8421</p></td>
+<td><p>13630</p></td>
+<td><p>22423</p></td>
+<td><p>27210</p></td>
+<td><p>7820</p></td>
+<td><p>8737</p></td>
+<td><p>5458</p></td>
+<td><p>9387</p></td>
+<td><p>496181</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>wikisort</p></th>
+<td><p>4265</p></td>
+<td><p>4860</p></td>
+<td><p>1673</p></td>
+<td><p>83652</p></td>
+<td><p>58508</p></td>
+<td><p>4166</p></td>
+<td><p>6738</p></td>
+<td><p>5378</p></td>
+<td><p>9953</p></td>
+<td><p>4268</p></td>
+<td><p>6359</p></td>
+<td><p>8652</p></td>
+<td><p>10786</p></td>
+<td><p>2736</p></td>
+<td><p>3043</p></td>
+<td><p>1148</p></td>
+<td><p>2879</p></td>
+<td><p>1033451</p></td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Lower value is better</p></li>
+</ul>
+<table class="docutils data align-default" id="id4">
+<caption><span class="caption-text">Benchmark statistics:</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head stub"></th>
+<th class="head"><p>cv32e40p_standard_32_false</p></th>
+<th class="head"><p>cv32e41p_standard_32_false</p></th>
+<th class="head"><p>cva5_standard_32_false</p></th>
+<th class="head"><p>femtorv_standard_32_false</p></th>
+<th class="head"><p>firev_standard_32_false</p></th>
+<th class="head"><p>ibex_standard_32_false</p></th>
+<th class="head"><p>lm32_standard_32_false</p></th>
+<th class="head"><p>marocchino_standard_32_false</p></th>
+<th class="head"><p>minerva_standard_32_false</p></th>
+<th class="head"><p>mor1kx_standard_32_false</p></th>
+<th class="head"><p>naxriscv_standard_32_false</p></th>
+<th class="head"><p>neorv32_standard_32_false</p></th>
+<th class="head"><p>picorv32_standard_32_false</p></th>
+<th class="head"><p>vexriscv_standard_32_false</p></th>
+<th class="head"><p>vexriscv_smp_standard_32_false</p></th>
+<th class="head"><p>blackparrot_sim_32_false</p></th>
+<th class="head"><p>microwatt_standard+ghdl_32_false</p></th>
+<th class="head"><p>serv_standard_32_false</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><th class="stub"><p>speed geometric mean</p></th>
+<td><p>8868</p></td>
+<td><p>9839</p></td>
+<td><p>3921</p></td>
+<td><p>51606</p></td>
+<td><p>31738</p></td>
+<td><p>8949</p></td>
+<td><p>8319</p></td>
+<td><p>8852</p></td>
+<td><p>25969</p></td>
+<td><p>6671</p></td>
+<td><p>11408</p></td>
+<td><p>14968</p></td>
+<td><p>20504</p></td>
+<td><p>5274</p></td>
+<td><p>6009</p></td>
+<td><p>2645</p></td>
+<td><p>4776</p></td>
+<td><p>553415</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>speed geometric standard deviation</p></th>
+<td><p>1.31</p></td>
+<td><p>1.31</p></td>
+<td><p>1.4</p></td>
+<td><p>3.18</p></td>
+<td><p>3.25</p></td>
+<td><p>1.33</p></td>
+<td><p>1.55</p></td>
+<td><p>1.45</p></td>
+<td><p>2.01</p></td>
+<td><p>1.47</p></td>
+<td><p>1.58</p></td>
+<td><p>1.5</p></td>
+<td><p>1.52</p></td>
+<td><p>1.52</p></td>
+<td><p>1.54</p></td>
+<td><p>2.35</p></td>
+<td><p>1.52</p></td>
+<td><p>3.33</p></td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>Benchmark consists of multiple invidual tests</p></li>
+<li><p>Lower geometric mean is better</p></li>
+<li><p>Lower standard deviation is better, more consistent results</p></li>
+</ul>
+
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      2023-03-02
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        Copyright &#169; Antmicro, 2023.
+        
+    </div>
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://github.com/antmicro" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/antmicro" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["toc.integrate"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="_static/sphinx_immaterial_theme.cea6a0c1d5b0618cf.min.js"></script>
+    
+  </body>
+</html>

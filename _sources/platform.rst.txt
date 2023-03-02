@@ -1,0 +1,36 @@
+Platform
+########
+.. csv-table::
+    :file: cpu_sha.csv
+    :header-rows: 1
+
+Used tools:
+***********
+Toolchains:
+***********
+:RISC-V:
+	riscv64-elf-newlib-gcc (12.1.0) 12.1.0 
+
+:LM32:
+	lm32-elf-gcc (9.2.0) 9.2.0 
+
+:OpenRISC:
+	or1k-elf-gcc (9.2.0) 9.2.0 
+
+:OpenPOWER:
+	ppc64le-linux-musl-gcc (12.1.0) 12.1.0 
+
+Other tools:
+************
+:verilator:
+	Verilator 5.005 devel rev UNKNOWN.REV
+
+
+:yosys:
+	Yosys 0.24+10 (git sha1 3ebc50dee, gcc 9.4.0-1ubuntu1~20.04.1 -fPIC -Os)
+
+
+:ghdl:
+	GHDL 3.0.0-dev (tarball) [Dunoon edition]  Compiled with GNAT Version: 9.4.0  mcode code generator Written by Tristan Gingold.
+
+
