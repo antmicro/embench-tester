@@ -19,9 +19,3 @@
 	path = third_party/openc906
 	url = https://github.com/Icenowy/openc906.git
     	branch = fpga-optimization
-[submodule "third_party/yosys"]
-	path = third_party/yosys
-	url = https://github.com/YosysHQ/yosys.git
-[submodule "third_party/verilator"]
-	path = third_party/verilator
-	url = https://github.com/verilator/verilator.git
