@@ -5,6 +5,7 @@ channels:
     - litex-hub
     - conda-forge
 dependencies:
+    - conda-forge::python=3.10.9=he550d4f_0_cpython
     - litex-hub::gcc-lm32-elf-newlib=9.2.0=20210513_184432
     - litex-hub::gcc-or1k-elf-newlib=9.2.0=20210513_184432
     - antmicro::gcc-ppc64le-linux-musl=12.1.0=20221019_1514
