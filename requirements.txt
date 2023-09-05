@@ -2,4 +2,4 @@ gitpython
 meson==0.59
 ninja
 amaranth
-amaranth-yosys
+amaranth-yosys==0.25.0.0.post69
