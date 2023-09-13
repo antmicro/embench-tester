@@ -35,8 +35,8 @@ runs:
         sudo apt-get -y install clang libreadline-dev gawk libffi-dev graphviz xdot libboost-system-dev libboost-python-dev libboost-filesystem-dev
         sudo apt-get -y install libevent-dev libjson-c-dev ca-certificates quilt
         sudo apt-get -y install flex bison ccache g++ autoconf perl libgoogle-perftools-dev numactl perl-doc libfl2 libfl-dev zlibc zlib1g zlib1g-dev
-        sudo apt-get -y install openjdk-8-jdk
         pip3 install gitpython
+        echo "JAVA_HOME=${JAVA_HOME_8_X64}" >> $GITHUB_ENV
         sudo ./sbtinstall.sh
         git config --global url.https://github.com/.insteadof "git@github.com:"
         make env
