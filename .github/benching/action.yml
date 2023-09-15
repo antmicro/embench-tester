@@ -29,10 +29,8 @@ runs:
   using: 'composite'
   steps:
     - shell: bash
-      env:
-        JAVA_HOME: $(JAVA_HOME_8_X64)
-        PATH: $(JAVA_HOME_8_X64)/bin:$(PATH)
       run: |
+        export PATH="$JAVA_HOME_8_X64/bin:$PATH"
         sudo apt-get update
         sudo apt-get -y install gnat python3 python3-setuptools python3-pip zlib1g-dev tcl8.6-dev git make
         sudo apt-get -y install clang libreadline-dev gawk libffi-dev graphviz xdot libboost-system-dev libboost-python-dev libboost-filesystem-dev
